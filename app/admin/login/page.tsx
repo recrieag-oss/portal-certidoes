@@ -39,7 +39,7 @@ export default function AdminLoginPage() {
       <div className="w-full max-w-sm">
         {/* Logo */}
         <div className="mb-8 flex justify-center">
-          <div className="rounded-2xl bg-white px-5 py-2.5">
+          <div className="rounded-2xl bg-[#002776] px-5 py-2.5">
             <Image src="/logo.svg" alt="Portal Certidões" width={120} height={34} className="h-8 w-auto" />
           </div>
         </div>
