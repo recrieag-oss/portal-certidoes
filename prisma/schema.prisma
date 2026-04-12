@@ -1,0 +1,46 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               String    @id
+  email            String    @unique
+  passwordHash     String
+  nome             String    @default("")
+  cpf              String    @default("")
+  whatsapp         String    @default("")
+  createdAt        DateTime  @default(now())
+  resetToken       String?
+  resetTokenExpiry DateTime?
+  orders           Order[]
+  sessions         Session[]
+}
+
+model Order {
+  id            String   @id
+  userId        String
+  tipo          String
+  status        String   @default("recebido")
+  statusHistory Json     @default("[]")
+  formData      Json
+  pedidoResumo  Json
+  pdfPath       String?
+  paymentId     String?
+  paymentStatus String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  user          User     @relation(fields: [userId], references: [id])
+}
+
+model Session {
+  id        String   @id
+  userId    String
+  role      String   @default("client")
+  expiresAt DateTime
+  user      User     @relation(fields: [userId], references: [id])
+}

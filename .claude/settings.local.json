@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run:*)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(netstat -ano)",
+      "Bash(tasklist /FI \"PID eq 41296\")",
+      "Bash(tasklist)",
+      "Bash(kill 41296)",
+      "Bash(taskkill //F //PID 41296)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:api.github.com)",
+      "Bash(node -e \":*)",
+      "Bash(findstr :3000)",
+      "Bash(taskkill /F /PID 38240)",
+      "Bash(taskkill //F //PID 38240)",
+      "Bash(npm install:*)",
+      "Bash(node -e \"const o=require\\(''./data/orders.json''\\); console.log\\(o.length, ''pedidos''\\); o.slice\\(0,2\\).forEach\\(p=>console.log\\(p.id, p.status, p.userId\\)\\)\" --prefix \"D:/SITE DE DOCS\")",
+      "Bash(node -e ':*)",
+      "Bash(powershell.exe -Command \"Copy-Item 'D:\\\\\\\\site doc arquivos\\\\\\\\LOGO-04.svg' 'D:\\\\\\\\SITE DE DOCS\\\\\\\\public\\\\\\\\logo.svg' -Force; Write-Host 'OK'\")",
+      "Bash(powershell.exe -Command \"\\(Get-Content 'D:\\\\\\\\SITE DE DOCS\\\\\\\\public\\\\\\\\logo.svg' -TotalCount 3\\) -join ''\")",
+      "Bash(powershell.exe -Command \"Get-Content 'D:\\\\\\\\SITE DE DOCS\\\\\\\\public\\\\\\\\logo.svg' | Select-String 'fill.*#002|fill.*#FED|fill.*white|fill.*#fff' | Select-Object -First 3 | Select-Object -ExpandProperty Line\")",
+      "Bash(cmd.exe /c \"python -c \\\\\"import re; f=open\\('D:/SITE DE DOCS/public/logo.svg',encoding='utf-8'\\); c=f.read\\(\\); f.close\\(\\); cols=list\\(dict.fromkeys\\(re.findall\\(r'fill[: ]+\\([#a-zA-Z0-9]+\\)',c\\)\\)\\); print\\('Colors:',cols[:12]\\); vb=re.search\\(r'viewBox=.\\([^\\\\\\\\\\\\\"]+\\)',c\\); print\\('VB:',vb.group\\(1\\) if vb else '?'\\)\\\\\"\")",
+      "Bash(cmd.exe /c \"findstr /i \\\\\"fill.*fff fill.*white fill.*FFF\\\\\" \\\\\"D:\\\\\\\\SITE DE DOCS\\\\\\\\public\\\\\\\\logo.svg\\\\\"\")",
+      "Bash(cmd.exe /c 'python -c \":*)",
+      "Read(//c/Users/cleba/AppData/Local/Temp/claude/D--SITE-DE-DOCS/cd190685-147b-4017-9c33-b2b2e2991f0e/tasks/**)",
+      "Bash(npx prisma:*)"
+    ]
+  }
+}

@@ -1,0 +1,113 @@
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import Image from "next/image";
+import { Eye, EyeOff, LogIn, ArrowLeft, ShieldCheck } from "lucide-react";
+
+export default function PortalLoginPage() {
+  const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+  const [showPass, setShowPass] = useState(false);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, senha }),
+      });
+      const data = await res.json();
+      if (!res.ok) { setError(data.error ?? "Credenciais inválidas"); return; }
+      router.push("/portal");
+      router.refresh();
+    } catch {
+      setError("Erro de conexão. Tente novamente.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-[#0b1835] to-[#002776] flex flex-col items-center justify-center p-4">
+      <div className="w-full max-w-md">
+        <Link href="/" className="mb-8 inline-flex items-center gap-2 text-sm text-blue-300 hover:text-white transition-colors">
+          <ArrowLeft className="h-4 w-4" /> Voltar ao site
+        </Link>
+
+        <div className="overflow-hidden rounded-[28px] bg-white shadow-2xl">
+          {/* Header */}
+          <div className="bg-[#002776] px-8 py-8 text-center">
+            <div className="mx-auto mb-4 w-fit rounded-2xl bg-white/10 px-5 py-2.5">
+              <Image src="/logo.svg" alt="Portal Certidões" width={300} height={68} className="h-8 w-auto" />
+            </div>
+            <h1 className="text-xl font-bold text-white">Área do Cliente</h1>
+            <p className="mt-1.5 text-sm text-blue-200">Acompanhe seus pedidos de certidões</p>
+          </div>
+
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="px-8 py-8 space-y-5">
+            <div className="space-y-1.5">
+              <label className="block text-sm font-semibold text-slate-700">E-mail</label>
+              <input
+                type="email" required value={email} onChange={(e) => setEmail(e.target.value)}
+                placeholder="seu@email.com"
+                className="w-full rounded-[16px] border border-slate-200 bg-slate-50 px-4 py-3.5 text-sm text-slate-900 outline-none focus:border-[#002776] focus:ring-2 focus:ring-blue-100 transition"
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="block text-sm font-semibold text-slate-700">Senha</label>
+              <div className="relative">
+                <input
+                  type={showPass ? "text" : "password"} required value={senha} onChange={(e) => setSenha(e.target.value)}
+                  placeholder="••••••••"
+                  className="w-full rounded-[16px] border border-slate-200 bg-slate-50 px-4 py-3.5 pr-11 text-sm text-slate-900 outline-none focus:border-[#002776] focus:ring-2 focus:ring-blue-100 transition"
+                />
+                <button type="button" onClick={() => setShowPass((v) => !v)}
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
+                  {showPass ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </button>
+              </div>
+            </div>
+
+            {error && (
+              <div className="flex items-start gap-2 rounded-[14px] border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                <span className="mt-0.5 text-red-500">⚠</span> {error}
+              </div>
+            )}
+
+            <div className="flex justify-end">
+              <Link href="/portal/esqueci-senha" className="text-xs text-[#002776] font-medium hover:underline">
+                Esqueceu a senha?
+              </Link>
+            </div>
+
+            <button type="submit" disabled={loading}
+              className="w-full inline-flex items-center justify-center gap-2 rounded-[16px] bg-[#002776] px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-blue-900 disabled:opacity-60">
+              {loading
+                ? <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                : <LogIn className="h-4 w-4" />}
+              {loading ? "Entrando..." : "Entrar na minha conta"}
+            </button>
+
+            <div className="flex items-center gap-2 rounded-[14px] bg-slate-50 px-4 py-3">
+              <ShieldCheck className="h-4 w-4 shrink-0 text-[#002776]" />
+              <p className="text-xs text-slate-500">
+                Sua conta é criada automaticamente ao fazer o primeiro pedido.{" "}
+                <Link href="/certidao/nascimento" className="text-[#002776] font-semibold hover:underline">Solicitar agora</Link>
+              </p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+}
