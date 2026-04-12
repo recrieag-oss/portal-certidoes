@@ -18,7 +18,6 @@ model User {
   resetToken       String?
   resetTokenExpiry DateTime?
   orders           Order[]
-  sessions         Session[]
 }
 
 model Order {
@@ -37,10 +36,10 @@ model Order {
   user          User     @relation(fields: [userId], references: [id])
 }
 
+// Session userId is a plain string — no FK so admin sessions ("admin") work without a User record
 model Session {
   id        String   @id
   userId    String
   role      String   @default("client")
   expiresAt DateTime
-  user      User     @relation(fields: [userId], references: [id])
 }
