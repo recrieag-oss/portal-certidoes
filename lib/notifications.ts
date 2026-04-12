@@ -29,17 +29,19 @@ export async function sendStatusEmail(
   order: Order,
   user: User,
   newStatus: OrderStatus,
-  note?: string
+  note?: string,
+  pdfBuffer?: Buffer          // ← PDF attachment when finalizado
 ): Promise<{ ok: boolean; error?: string }> {
   if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
     console.warn("[notifications] SMTP not configured – skipping email");
     return { ok: false, error: "SMTP não configurado" };
   }
 
-  const label = ORDER_STATUS_LABELS[newStatus];
-  const color = STATUS_COLORS[newStatus];
-  const portalUrl = process.env.NEXT_PUBLIC_URL || "http://localhost:3000";
-  const orderUrl = `${portalUrl}/portal/pedido/${order.id}`;
+  const label      = ORDER_STATUS_LABELS[newStatus];
+  const color      = STATUS_COLORS[newStatus];
+  const portalUrl  = process.env.NEXT_PUBLIC_URL || "http://localhost:3000";
+  const orderUrl   = `${portalUrl}/portal/pedido/${order.id}`;
+  const isFinal    = newStatus === "finalizado";
 
   const html = `
 <!DOCTYPE html>
@@ -53,7 +55,7 @@ export async function sendStatusEmail(
         <tr>
           <td style="background:#002776;padding:32px 40px;text-align:center;">
             <p style="margin:0;color:#fff;font-size:22px;font-weight:700;letter-spacing:.5px;">PORTAL CERTIDÕES</p>
-            <p style="margin:6px 0 0;color:#93c5fd;font-size:13px;">Atualização do seu pedido</p>
+            <p style="margin:6px 0 0;color:#93c5fd;font-size:13px;">${isFinal ? "Seu documento está pronto! 🎉" : "Atualização do seu pedido"}</p>
           </td>
         </tr>
         <!-- Status badge -->
@@ -62,7 +64,10 @@ export async function sendStatusEmail(
             <span style="display:inline-block;background:${color};color:#fff;border-radius:999px;padding:8px 22px;font-size:14px;font-weight:600;">${label}</span>
             <h2 style="margin:20px 0 8px;font-size:22px;color:#0f172a;">Olá, ${user.nome}!</h2>
             <p style="margin:0;color:#475569;font-size:15px;line-height:1.6;">
-              O status do seu pedido <strong style="color:#002776;">${order.id}</strong> foi atualizado.
+              ${isFinal
+                ? `Sua certidão referente ao pedido <strong style="color:#002776;">${order.id}</strong> está pronta e disponível para download.`
+                : `O status do seu pedido <strong style="color:#002776;">${order.id}</strong> foi atualizado.`
+              }
             </p>
           </td>
         </tr>
@@ -82,7 +87,7 @@ export async function sendStatusEmail(
               </tr>
               <tr>
                 <td colspan="2" style="padding:18px 24px;">
-                  <p style="margin:0;font-size:12px;color:#94a3b8;text-transform:uppercase;letter-spacing:.08em;">Novo status</p>
+                  <p style="margin:0;font-size:12px;color:#94a3b8;text-transform:uppercase;letter-spacing:.08em;">Status</p>
                   <p style="margin:4px 0 0;font-size:15px;font-weight:700;color:${color};">${label}</p>
                   ${note ? `<p style="margin:8px 0 0;font-size:14px;color:#475569;">${note}</p>` : ""}
                 </td>
@@ -92,12 +97,22 @@ export async function sendStatusEmail(
         </tr>
         <!-- CTA -->
         <tr>
-          <td style="padding:0 40px 36px;text-align:center;">
+          <td style="padding:0 40px ${isFinal ? "20px" : "36px"};text-align:center;">
             <a href="${orderUrl}" style="display:inline-block;background:#002776;color:#fff;text-decoration:none;border-radius:999px;padding:14px 36px;font-size:15px;font-weight:600;">
-              Acompanhar meu pedido →
+              ${isFinal ? "Acessar meu pedido →" : "Acompanhar meu pedido →"}
             </a>
           </td>
         </tr>
+        ${isFinal && pdfBuffer ? `
+        <!-- PDF download callout -->
+        <tr>
+          <td style="padding:0 40px 36px;text-align:center;">
+            <div style="border:2px dashed #10B981;border-radius:16px;padding:20px 24px;background:#f0fdf4;">
+              <p style="margin:0 0 4px;font-size:14px;font-weight:700;color:#065f46;">📎 Certidão em anexo</p>
+              <p style="margin:0;font-size:13px;color:#047857;">O arquivo PDF da sua certidão está anexado a este e-mail.</p>
+            </div>
+          </td>
+        </tr>` : ""}
         <!-- Footer -->
         <tr>
           <td style="background:#f8fafc;padding:20px 40px;text-align:center;border-top:1px solid #e2e8f0;">
@@ -113,10 +128,22 @@ export async function sendStatusEmail(
   try {
     const transporter = getTransporter();
     await transporter.sendMail({
-      from: `"Portal Certidões" <${process.env.SMTP_USER}>`,
-      to: user.email,
-      subject: `Pedido ${order.id} · ${label}`,
+      from:    `"Portal Certidões" <${process.env.SMTP_USER}>`,
+      to:      user.email,
+      subject: isFinal
+        ? `✅ Sua certidão está pronta — Pedido ${order.id}`
+        : `Pedido ${order.id} · ${label}`,
       html,
+      // Attach PDF if provided
+      ...(pdfBuffer
+        ? {
+            attachments: [{
+              filename:    `certidao-${order.id}.pdf`,
+              content:     pdfBuffer,
+              contentType: "application/pdf",
+            }],
+          }
+        : {}),
     });
     return { ok: true };
   } catch (err: any) {
@@ -126,11 +153,6 @@ export async function sendStatusEmail(
 }
 
 // ─── WhatsApp Notification ────────────────────────────────────────────────────
-// Compatible with: Evolution API, Z-API, Twilio WhatsApp, or any REST-based gateway.
-// Configure via env vars:
-//   WHATSAPP_API_URL   → e.g. https://api.z-api.io/instances/XXXX/token/YYYY/send-text
-//   WHATSAPP_API_TOKEN → Bearer token or API key
-//   WHATSAPP_API_TYPE  → "evolution" | "zapi" | "twilio" (default: "evolution")
 export async function sendWhatsAppMessage(
   phone: string,
   order: Order,
@@ -146,58 +168,58 @@ export async function sendWhatsAppMessage(
     return { ok: false, error: "WhatsApp API não configurada" };
   }
 
-  const label    = ORDER_STATUS_LABELS[newStatus];
+  const label     = ORDER_STATUS_LABELS[newStatus];
   const portalUrl = process.env.NEXT_PUBLIC_URL || "http://localhost:3000";
-  const cleaned  = phone.replace(/\D/g, "");
+  const cleaned   = phone.replace(/\D/g, "");
+  const isFinal   = newStatus === "finalizado";
+  const orderUrl  = `${portalUrl}/portal/pedido/${order.id}`;
 
-  const message =
-    `✅ *Portal Certidões*\n\n` +
-    `Olá! Seu pedido *${order.id}* foi atualizado.\n\n` +
-    `📋 *Status:* ${label}\n` +
-    (note ? `📝 *Observação:* ${note}\n\n` : "\n") +
-    `Acompanhe em: ${portalUrl}/portal/pedido/${order.id}`;
+  const message = isFinal
+    ? `✅ *Portal Certidões*\n\n` +
+      `Olá! Sua certidão está *pronta para download*! 🎉\n\n` +
+      `📋 *Pedido:* ${order.id}\n` +
+      `📄 *Tipo:* ${order.tipo}\n` +
+      (note ? `📝 *Observação:* ${note}\n\n` : "\n") +
+      `👇 *Acesse agora para baixar seu documento:*\n` +
+      `${orderUrl}\n\n` +
+      `_Faça login com seu e-mail e senha cadastrados._`
+    : `✅ *Portal Certidões*\n\n` +
+      `Olá! Seu pedido *${order.id}* foi atualizado.\n\n` +
+      `📋 *Status:* ${label}\n` +
+      (note ? `📝 *Observação:* ${note}\n\n` : "\n") +
+      `Acompanhe em: ${orderUrl}`;
 
   try {
     let body: Record<string, unknown>;
-    let headers: Record<string, string> = {
-      "Content-Type": "application/json",
-    };
+    let headers: Record<string, string> = { "Content-Type": "application/json" };
 
     if (apiType === "evolution") {
-      // Evolution API v2 format
       body = { number: `55${cleaned}`, text: message };
       headers["apikey"] = apiToken;
     } else if (apiType === "zapi") {
-      // Z-API format
       body = { phone: `55${cleaned}`, message };
       headers["Client-Token"] = apiToken;
     } else if (apiType === "twilio") {
-      // Twilio expects form-encoded
       const params = new URLSearchParams({
-        To: `whatsapp:+55${cleaned}`,
+        To:   `whatsapp:+55${cleaned}`,
         From: `whatsapp:${process.env.TWILIO_WHATSAPP_FROM || ""}`,
         Body: message,
       });
       const res = await fetch(apiUrl, {
-        method: "POST",
+        method:  "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
-          Authorization: `Basic ${Buffer.from(apiToken).toString("base64")}`,
+          Authorization:  `Basic ${Buffer.from(apiToken).toString("base64")}`,
         },
         body: params.toString(),
       });
       return { ok: res.ok };
     } else {
-      // Generic JSON gateway
       body = { phone: cleaned, message };
       headers["Authorization"] = `Bearer ${apiToken}`;
     }
 
-    const res = await fetch(apiUrl, {
-      method: "POST",
-      headers,
-      body: JSON.stringify(body),
-    });
+    const res = await fetch(apiUrl, { method: "POST", headers, body: JSON.stringify(body) });
 
     if (!res.ok) {
       const txt = await res.text();
