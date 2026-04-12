@@ -41,29 +41,40 @@ const ACTIVITY_POOL = [
   { initials: "EP", color: "#6366F1", name: "Elaine P.",    type: "Óbito",      state: "RO" },
 ];
 
-/* 3 fixed positions on the map (percentage of container) */
+/*
+ * Positions calibradas ao contorno do Brasil no SVG (viewBox 500×520).
+ * Mantidas longe das bordas para não cortar em mobile.
+ *   - Nordeste:     ~x320, y115  →  left 64%, top 22%
+ *   - Sudeste:      ~x260, y250  →  left 52%, top 48%
+ *   - Centro-Oeste: ~x150, y185  →  left 30%, top 36%
+ */
 const BADGE_POSITIONS = [
-  { top: "10%",  left: "55%" },   // Norte/Nordeste
-  { top: "52%",  left: "58%" },   // Centro/Sudeste
-  { top: "28%",  left: "4%"  },   // Oeste
+  { top: "22%", left: "64%" },
+  { top: "48%", left: "52%" },
+  { top: "36%", left: "30%" },
 ];
 
-/* Staggered starting indices so badges show different entries */
 const BADGE_OFFSETS = [0, 7, 14];
-const CYCLE_MS = 3800;
+const CYCLE_MS = 4500;
 
 function ActivityBadges() {
-  const [indices, setIndices] = useState(BADGE_OFFSETS);
+  const [indices, setIndices]   = useState(BADGE_OFFSETS);
+  const [visible, setVisible]   = useState([true, true, true]);
 
   useEffect(() => {
     const timers = BADGE_POSITIONS.map((_, slot) =>
       setInterval(() => {
-        setIndices((prev) => {
-          const next = [...prev];
-          next[slot] = (next[slot] + 1) % ACTIVITY_POOL.length;
-          return next;
-        });
-      }, CYCLE_MS + slot * 600) // offset so they don't all flip at once
+        /* fade out → swap → fade in */
+        setVisible((v) => { const n = [...v]; n[slot] = false; return n; });
+        setTimeout(() => {
+          setIndices((prev) => {
+            const next = [...prev];
+            next[slot] = (next[slot] + 1) % ACTIVITY_POOL.length;
+            return next;
+          });
+          setVisible((v) => { const n = [...v]; n[slot] = true; return n; });
+        }, 450);
+      }, CYCLE_MS + slot * 900)
     );
     return () => timers.forEach(clearInterval);
   }, []);
@@ -78,43 +89,47 @@ function ActivityBadges() {
             className="absolute z-10 flex flex-col items-center"
             style={{ top: pos.top, left: pos.left, transform: "translate(-50%, -50%)" }}
           >
-            {/* Pulsing ring */}
+            {/* Soft glow ring — gentler scale, longer duration */}
             <motion.div
-              animate={{ scale: [1, 1.55, 1], opacity: [0.55, 0, 0.55] }}
-              transition={{ duration: 2.2, repeat: Infinity, ease: "easeOut" }}
-              className="absolute rounded-full"
-              style={{ width: 48, height: 48, background: entry.color, opacity: 0.3 }}
+              animate={{ scale: [1, 1.65, 1], opacity: [0.35, 0, 0.35] }}
+              transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut", delay: slot * 0.9 }}
+              className="absolute rounded-full pointer-events-none"
+              style={{ width: 44, height: 44, background: entry.color }}
             />
 
             {/* Avatar circle */}
             <AnimatePresence mode="wait">
-              <motion.div
-                key={entry.initials + slot}
-                initial={{ scale: 0.7, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.7, opacity: 0 }}
-                transition={{ duration: 0.35, ease: "backOut" }}
-                className="flex h-10 w-10 items-center justify-center rounded-full text-xs font-black text-white shadow-lg ring-2 ring-white/80"
-                style={{ background: entry.color, boxShadow: `0 0 14px ${entry.color}88` }}
-              >
-                {entry.initials}
-              </motion.div>
+              {visible[slot] && (
+                <motion.div
+                  key={entry.initials + slot}
+                  initial={{ scale: 0.75, opacity: 0 }}
+                  animate={{ scale: 1,    opacity: 1 }}
+                  exit={{    scale: 0.75, opacity: 0 }}
+                  transition={{ duration: 0.45, ease: [0.34, 1.26, 0.64, 1] }}
+                  className="flex h-10 w-10 items-center justify-center rounded-full text-xs font-black text-white ring-2 ring-white/90"
+                  style={{ background: entry.color, boxShadow: `0 2px 12px ${entry.color}55` }}
+                >
+                  {entry.initials}
+                </motion.div>
+              )}
             </AnimatePresence>
 
-            {/* Label bubble */}
+            {/* Label bubble — largura limitada para não sair do mapa */}
             <AnimatePresence mode="wait">
-              <motion.div
-                key={entry.name + slot}
-                initial={{ opacity: 0, y: 4, scale: 0.9 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: -4, scale: 0.9 }}
-                transition={{ duration: 0.3, delay: 0.05 }}
-                className="mt-1.5 whitespace-nowrap rounded-xl bg-white/95 px-2.5 py-1 shadow-md backdrop-blur-sm"
-                style={{ boxShadow: "0 2px 12px rgba(0,0,0,0.12)" }}
-              >
-                <p className="text-[10px] font-bold text-slate-800 leading-tight">{entry.name}</p>
-                <p className="text-[9px] text-slate-400 leading-tight">{entry.type} · {entry.state}</p>
-              </motion.div>
+              {visible[slot] && (
+                <motion.div
+                  key={entry.name + slot}
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{    opacity: 0, y: -4 }}
+                  transition={{ duration: 0.4, delay: 0.08, ease: "easeOut" }}
+                  className="mt-1.5 rounded-xl bg-white/95 px-2.5 py-1 shadow-md backdrop-blur-sm text-center"
+                  style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.09)", maxWidth: 108, minWidth: 72 }}
+                >
+                  <p className="text-[10px] font-bold text-slate-800 leading-tight truncate">{entry.name}</p>
+                  <p className="text-[9px] text-slate-400 leading-tight">{entry.type} · {entry.state}</p>
+                </motion.div>
+              )}
             </AnimatePresence>
           </div>
         );
