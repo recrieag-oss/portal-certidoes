@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect } from "react";
 import {
   FileText,
   CreditCard,
@@ -15,6 +16,112 @@ import {
   MapPin,
   Download,
 } from "lucide-react";
+
+/* ── Activity pool — 20+ entries cycling continuously ──────── */
+const ACTIVITY_POOL = [
+  { initials: "MA", color: "#EF4444", name: "Marcos A.",    type: "Nascimento", state: "AM" },
+  { initials: "BC", color: "#8B5CF6", name: "Beatriz C.",   type: "Casamento",  state: "CE" },
+  { initials: "RS", color: "#14B8A6", name: "Rafael S.",    type: "Óbito",      state: "SP" },
+  { initials: "JO", color: "#F59E0B", name: "Joana O.",     type: "Nascimento", state: "MG" },
+  { initials: "LF", color: "#3B82F6", name: "Lucas F.",     type: "Casamento",  state: "RJ" },
+  { initials: "AM", color: "#EC4899", name: "Ana M.",       type: "Nascimento", state: "BA" },
+  { initials: "PL", color: "#10B981", name: "Paulo L.",     type: "Óbito",      state: "RS" },
+  { initials: "CT", color: "#6366F1", name: "Carla T.",     type: "Casamento",  state: "PR" },
+  { initials: "DE", color: "#F97316", name: "Diego E.",     type: "Nascimento", state: "PA" },
+  { initials: "MR", color: "#0EA5E9", name: "Marina R.",    type: "Óbito",      state: "GO" },
+  { initials: "TS", color: "#A855F7", name: "Thiago S.",    type: "Casamento",  state: "SC" },
+  { initials: "FN", color: "#EF4444", name: "Fernanda N.",  type: "Nascimento", state: "PE" },
+  { initials: "GB", color: "#22C55E", name: "Gustavo B.",   type: "Óbito",      state: "MA" },
+  { initials: "RL", color: "#F59E0B", name: "Renata L.",    type: "Casamento",  state: "ES" },
+  { initials: "VX", color: "#14B8A6", name: "Vitor X.",     type: "Nascimento", state: "MT" },
+  { initials: "IS", color: "#8B5CF6", name: "Isabela S.",   type: "Casamento",  state: "PB" },
+  { initials: "HM", color: "#3B82F6", name: "Henrique M.",  type: "Óbito",      state: "RN" },
+  { initials: "KP", color: "#EC4899", name: "Kamila P.",    type: "Nascimento", state: "AL" },
+  { initials: "NF", color: "#10B981", name: "Nicolas F.",   type: "Casamento",  state: "TO" },
+  { initials: "EP", color: "#6366F1", name: "Elaine P.",    type: "Óbito",      state: "RO" },
+];
+
+/* 3 fixed positions on the map (percentage of container) */
+const BADGE_POSITIONS = [
+  { top: "10%",  left: "55%" },   // Norte/Nordeste
+  { top: "52%",  left: "58%" },   // Centro/Sudeste
+  { top: "28%",  left: "4%"  },   // Oeste
+];
+
+/* Staggered starting indices so badges show different entries */
+const BADGE_OFFSETS = [0, 7, 14];
+const CYCLE_MS = 3800;
+
+function ActivityBadges() {
+  const [indices, setIndices] = useState(BADGE_OFFSETS);
+
+  useEffect(() => {
+    const timers = BADGE_POSITIONS.map((_, slot) =>
+      setInterval(() => {
+        setIndices((prev) => {
+          const next = [...prev];
+          next[slot] = (next[slot] + 1) % ACTIVITY_POOL.length;
+          return next;
+        });
+      }, CYCLE_MS + slot * 600) // offset so they don't all flip at once
+    );
+    return () => timers.forEach(clearInterval);
+  }, []);
+
+  return (
+    <>
+      {BADGE_POSITIONS.map((pos, slot) => {
+        const entry = ACTIVITY_POOL[indices[slot]];
+        return (
+          <div
+            key={slot}
+            className="absolute z-10 flex flex-col items-center"
+            style={{ top: pos.top, left: pos.left, transform: "translate(-50%, -50%)" }}
+          >
+            {/* Pulsing ring */}
+            <motion.div
+              animate={{ scale: [1, 1.55, 1], opacity: [0.55, 0, 0.55] }}
+              transition={{ duration: 2.2, repeat: Infinity, ease: "easeOut" }}
+              className="absolute rounded-full"
+              style={{ width: 48, height: 48, background: entry.color, opacity: 0.3 }}
+            />
+
+            {/* Avatar circle */}
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={entry.initials + slot}
+                initial={{ scale: 0.7, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.7, opacity: 0 }}
+                transition={{ duration: 0.35, ease: "backOut" }}
+                className="flex h-10 w-10 items-center justify-center rounded-full text-xs font-black text-white shadow-lg ring-2 ring-white/80"
+                style={{ background: entry.color, boxShadow: `0 0 14px ${entry.color}88` }}
+              >
+                {entry.initials}
+              </motion.div>
+            </AnimatePresence>
+
+            {/* Label bubble */}
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={entry.name + slot}
+                initial={{ opacity: 0, y: 4, scale: 0.9 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -4, scale: 0.9 }}
+                transition={{ duration: 0.3, delay: 0.05 }}
+                className="mt-1.5 whitespace-nowrap rounded-xl bg-white/95 px-2.5 py-1 shadow-md backdrop-blur-sm"
+                style={{ boxShadow: "0 2px 12px rgba(0,0,0,0.12)" }}
+              >
+                <p className="text-[10px] font-bold text-slate-800 leading-tight">{entry.name}</p>
+                <p className="text-[9px] text-slate-400 leading-tight">{entry.type} · {entry.state}</p>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        );
+      })}
+    </>
+  );
+}
 
 /* ── Glassmorphism orb icons ───────────────────────────── */
 function NascimentoOrb() {
@@ -418,7 +525,8 @@ export default function Home() {
         <div className="overflow-hidden rounded-[40px] bg-white shadow-soft">
           <div className="grid lg:grid-cols-2">
             {/* Map side */}
-            <div className="relative flex flex-col items-center justify-center gap-4 bg-slate-50 p-6 sm:p-8">
+            <div className="relative flex items-center justify-center bg-slate-50 p-6 sm:p-8">
+              {/* Map + badges container — badges overlay the map on ALL screen sizes */}
               <div className="relative w-full max-w-sm">
                 <Image
                   src="/MAPA BRASIL.svg"
@@ -427,7 +535,7 @@ export default function Home() {
                   height={520}
                   className="w-full h-auto"
                 />
-                {/* Ping dots overlay – Manaus, Fortaleza, Recife, Salvador, Brasília, São Paulo, Porto Alegre */}
+                {/* Ping dots overlay */}
                 <svg viewBox="0 0 500 520" className="absolute inset-0 w-full h-full pointer-events-none" aria-hidden="true">
                   {[
                     { cx: 148, cy: 195, delay: 0 },
@@ -447,56 +555,9 @@ export default function Home() {
                     </g>
                   ))}
                 </svg>
-              </div>
 
-              {/* Floating activity cards — desktop only (overlaid on map) */}
-              {[
-                { initials: "MA", color: "#EF4444", name: "Marcos A.", activity: "Certidão de Nasc.", state: "AM", time: "há 5min", top: "10%", left: "52%" },
-                { initials: "BC", color: "#8B5CF6", name: "Beatriz C.", activity: "Certidão de Casa.", state: "CE", time: "há 23min", top: "58%", left: "56%" },
-                { initials: "RS", color: "#14B8A6", name: "Rafael S.", activity: "Certidão de Óbito", state: "SP", time: "há 1h", top: "32%", left: "6%" },
-              ].map((card, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: [0, -6, 0] }}
-                  transition={{ delay: 0.4 + i * 0.3, duration: 3, repeat: Infinity, repeatType: "loop", ease: "easeInOut" }}
-                  className="absolute hidden lg:flex items-center gap-2 rounded-2xl bg-white px-3 py-2 shadow-lg"
-                  style={{ top: card.top, left: card.left }}
-                >
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white" style={{ background: card.color }}>
-                    {card.initials}
-                  </span>
-                  <div className="whitespace-nowrap">
-                    <p className="text-xs font-semibold text-slate-900">{card.name}</p>
-                    <p className="text-[10px] text-slate-500">{card.activity} · {card.state} · {card.time}</p>
-                  </div>
-                </motion.div>
-              ))}
-
-              {/* Activity cards — mobile only (below map, animated row) */}
-              <div className="flex lg:hidden flex-col gap-2 mt-4 w-full">
-                {[
-                  { initials: "MA", color: "#EF4444", name: "Marcos A.", activity: "Certidão de Nasc.", state: "AM", time: "há 5min" },
-                  { initials: "BC", color: "#8B5CF6", name: "Beatriz C.", activity: "Certidão de Casa.", state: "CE", time: "há 23min" },
-                  { initials: "RS", color: "#14B8A6", name: "Rafael S.", activity: "Certidão de Óbito", state: "SP", time: "há 1h" },
-                ].map((card, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, x: -16 }}
-                    animate={{ opacity: 1, y: [0, -4, 0] }}
-                    transition={{ delay: 0.3 + i * 0.25, duration: 3, repeat: Infinity, repeatType: "loop", ease: "easeInOut" }}
-                    className="flex items-center gap-3 rounded-2xl bg-white px-4 py-2.5 shadow-md"
-                  >
-                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white" style={{ background: card.color }}>
-                      {card.initials}
-                    </span>
-                    <div>
-                      <p className="text-xs font-semibold text-slate-900">{card.name}</p>
-                      <p className="text-[10px] text-slate-500">{card.activity} · {card.state} · {card.time}</p>
-                    </div>
-                    <span className="ml-auto flex h-2 w-2 shrink-0 rounded-full bg-green-400 animate-pulse" />
-                  </motion.div>
-                ))}
+                {/* Cycling activity badges — visible on ALL screen sizes, overlaid on map */}
+                <ActivityBadges />
               </div>
             </div>
 
