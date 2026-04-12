@@ -86,35 +86,61 @@ function CasamentoOrb() {
 
 function ObitoOrb() {
   return (
-    <svg viewBox="0 0 96 96" width="72" height="72" className="shrink-0 drop-shadow-[0_0_18px_rgba(0,80,200,0.55)]">
+    <svg viewBox="0 0 96 96" width="72" height="72" className="shrink-0 drop-shadow-[0_0_18px_rgba(180,100,255,0.5)]">
       <defs>
         <radialGradient id="ob" cx="38%" cy="32%" r="65%">
-          <stop offset="0%" stopColor="#0d2560"/>
-          <stop offset="55%" stopColor="#061228"/>
-          <stop offset="100%" stopColor="#020612"/>
+          <stop offset="0%" stopColor="#1e0e3a"/>
+          <stop offset="55%" stopColor="#0e0620"/>
+          <stop offset="100%" stopColor="#050210"/>
         </radialGradient>
         <radialGradient id="og" cx="32%" cy="22%" r="50%">
-          <stop offset="0%" stopColor="rgba(255,255,255,0.5)"/>
+          <stop offset="0%" stopColor="rgba(255,255,255,0.45)"/>
           <stop offset="100%" stopColor="rgba(255,255,255,0)"/>
+        </radialGradient>
+        {/* Flame warm glow */}
+        <radialGradient id="flameGlow" cx="50%" cy="100%" r="70%">
+          <stop offset="0%" stopColor="rgba(255,160,40,0.45)"/>
+          <stop offset="100%" stopColor="rgba(255,100,0,0)"/>
+        </radialGradient>
+        {/* Flame gradient */}
+        <radialGradient id="flameBody" cx="50%" cy="80%" r="60%">
+          <stop offset="0%" stopColor="#fff7c0"/>
+          <stop offset="30%" stopColor="#ffb020"/>
+          <stop offset="70%" stopColor="#ff6000"/>
+          <stop offset="100%" stopColor="#cc2200"/>
+        </radialGradient>
+        {/* Inner flame */}
+        <radialGradient id="flameInner" cx="50%" cy="80%" r="55%">
+          <stop offset="0%" stopColor="#ffffff"/>
+          <stop offset="50%" stopColor="#fff0a0"/>
+          <stop offset="100%" stopColor="rgba(255,200,0,0)"/>
         </radialGradient>
         <clipPath id="oc"><circle cx="48" cy="48" r="44"/></clipPath>
       </defs>
       <circle cx="48" cy="48" r="44" fill="url(#ob)"/>
       <g clipPath="url(#oc)">
-        {/* Flag shield */}
-        <path d="M48 18 L70 28 L70 54 Q70 70 48 78 Q26 70 26 54 L26 28Z" fill="#009B3A"/>
-        <path d="M48 24 L65 33 L65 53 Q65 67 48 74 Q31 67 31 53 L31 33Z" fill="#FEDF00"/>
-        <ellipse cx="48" cy="50" rx="12" ry="12" fill="#002776"/>
-        {/* Stars hint */}
-        <circle cx="48" cy="50" r="8" fill="none" stroke="rgba(255,255,255,0.5)" strokeWidth="0.8"/>
-        <circle cx="48" cy="50" r="2" fill="white" opacity="0.9"/>
-        <circle cx="55" cy="47" r="1.2" fill="white" opacity="0.7"/>
-        <circle cx="41" cy="47" r="1.2" fill="white" opacity="0.7"/>
-        <circle cx="44" cy="55" r="1.2" fill="white" opacity="0.7"/>
-        <circle cx="52" cy="55" r="1.2" fill="white" opacity="0.7"/>
+        {/* Warm glow from candle */}
+        <ellipse cx="48" cy="62" rx="28" ry="22" fill="url(#flameGlow)"/>
+        {/* Candle body */}
+        <rect x="41" y="52" width="14" height="26" rx="3" fill="rgba(220,210,240,0.82)"/>
+        {/* Candle wax drip left */}
+        <path d="M41 57 Q38 60 39 64 L41 64Z" fill="rgba(200,190,220,0.6)"/>
+        {/* Candle wax drip right */}
+        <path d="M55 59 Q58 63 57 67 L55 67Z" fill="rgba(200,190,220,0.6)"/>
+        {/* Candle top rim */}
+        <ellipse cx="48" cy="52" rx="7" ry="2.5" fill="rgba(180,170,210,0.9)"/>
+        {/* Wick */}
+        <line x1="48" y1="52" x2="48" y2="44" stroke="#2a1a0a" strokeWidth="1.2" strokeLinecap="round"/>
+        {/* Flame outer */}
+        <path d="M48 22 C44 30 40 34 41 40 C42 46 44 48 48 48 C52 48 54 46 55 40 C56 34 52 30 48 22Z" fill="url(#flameBody)" opacity="0.95"/>
+        {/* Flame inner glow */}
+        <path d="M48 28 C46 33 44 36 45 40 C46 44 47 46 48 46 C49 46 50 44 51 40 C52 36 50 33 48 28Z" fill="url(#flameInner)" opacity="0.85"/>
+        {/* Candle shine */}
+        <rect x="43" y="55" width="2.5" height="14" rx="1.2" fill="rgba(255,255,255,0.22)"/>
       </g>
-      <ellipse cx="36" cy="26" rx="13" ry="8" fill="url(#og)" opacity="0.7"/>
-      <circle cx="48" cy="48" r="44" fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth="1.2"/>
+      {/* Gloss highlight */}
+      <ellipse cx="36" cy="26" rx="13" ry="8" fill="url(#og)" opacity="0.65"/>
+      <circle cx="48" cy="48" r="44" fill="none" stroke="rgba(200,150,255,0.18)" strokeWidth="1.2"/>
     </svg>
   );
 }
