@@ -2,8 +2,7 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { getSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { writeFileSync, mkdirSync, existsSync } from "fs";
-import path from "path";
+import { put } from "@vercel/blob";
 import type { StatusHistoryEntry } from "@/lib/types";
 import { sendStatusEmail, sendWhatsAppMessage } from "@/lib/notifications";
 
@@ -30,14 +29,14 @@ export async function POST(request: Request, { params }: { params: { id: string 
     return NextResponse.json({ error: "Arquivo PDF inválido" }, { status: 400 });
   }
 
-  // Read buffer before anything else (can only be consumed once)
+  // Read buffer (can only consume ReadableStream once)
   const pdfBuffer = Buffer.from(await file.arrayBuffer());
 
-  // Save to disk (works locally; on Vercel use Blob storage for persistence)
-  const dir = path.join(process.cwd(), "data", "pdfs");
-  if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
-  const fileName = `${params.id}.pdf`;
-  writeFileSync(path.join(dir, fileName), pdfBuffer);
+  // ── Upload to Vercel Blob ─────────────────────────────────────────────────
+  const blob = await put(`certidoes/${params.id}.pdf`, pdfBuffer, {
+    access:      "public",
+    contentType: "application/pdf",
+  });
 
   const prevHistory = (order.statusHistory as StatusHistoryEntry[]) ?? [];
   const newHistory: StatusHistoryEntry[] = [
@@ -47,7 +46,11 @@ export async function POST(request: Request, { params }: { params: { id: string 
 
   await prisma.order.update({
     where: { id: params.id },
-    data:  { pdfPath: fileName, status: "finalizado", statusHistory: newHistory },
+    data:  {
+      pdfPath:       blob.url,   // store the Blob URL instead of filename
+      status:        "finalizado",
+      statusHistory: newHistory,
+    },
   });
 
   // ── Auto-notify client (non-blocking) ────────────────────────────────────
@@ -79,7 +82,7 @@ export async function POST(request: Request, { params }: { params: { id: string 
     Promise.allSettled([
       // Email with PDF attachment
       sendStatusEmail(orderForNotify, userForNotify, "finalizado", undefined, pdfBuffer),
-      // WhatsApp with download link (if phone registered)
+      // WhatsApp with download link
       ...(user.whatsapp
         ? [sendWhatsAppMessage(user.whatsapp, orderForNotify, "finalizado")]
         : []),
@@ -92,5 +95,5 @@ export async function POST(request: Request, { params }: { params: { id: string 
     });
   }
 
-  return NextResponse.json({ success: true });
+  return NextResponse.json({ success: true, url: blob.url });
 }
