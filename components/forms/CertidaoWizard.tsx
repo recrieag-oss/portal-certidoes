@@ -10,11 +10,15 @@ import { StepLocalizacao } from "./StepLocalizacao";
 import { StepDados } from "./StepDados";
 import { StepServicos } from "./StepServicos";
 import { StepContato } from "./StepContato";
-import { useMultiStepForm } from "@/hooks/useMultiStepForm";
-import { Stepper } from "@/components/ui/Stepper";
 import { Button } from "@/components/ui/Button";
+import { MapPin, FileText, Package, User } from "lucide-react";
 
-const stepTitles = ["Localização", "Dados do registrado", "Serviços e entrega", "Solicitante e conta"];
+const sections = [
+  { number: "1", label: "Localização do Cartório",    icon: MapPin    },
+  { number: "2", label: "Dados do Registrado",        icon: FileText  },
+  { number: "3", label: "Serviços e Formato",         icon: Package   },
+  { number: "4", label: "Dados do Solicitante",       icon: User      },
+];
 
 const defaultValues: CertidaoFormValues = {
   estado: "",
@@ -41,13 +45,6 @@ const defaultValues: CertidaoFormValues = {
   aceitaTermos: false,
 };
 
-const stepFields = [
-  ["estado", "cidade", "naoSeiCartorio", "cartorio"],
-  ["nomeCompleto", "cpf", "dataNascimento", "nomeMae", "formato"],
-  ["servicos"],
-  ["nomeSolicitante", "cpfSolicitante", "email", "whatsapp", "senha", "confirmarSenha", "aceitaTermos"],
-];
-
 interface CertidaoWizardProps {
   tipo: CertidaoType;
 }
@@ -59,7 +56,6 @@ export function CertidaoWizard({ tipo }: CertidaoWizardProps) {
     defaultValues,
     mode: "onTouched",
   });
-  const { currentStep, nextStep, previousStep, isLastStep, isFirstStep } = useMultiStepForm(stepTitles);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const title = useMemo(() => {
@@ -67,33 +63,6 @@ export function CertidaoWizard({ tipo }: CertidaoWizardProps) {
     if (tipo === "casamento") return "Certidão de Casamento";
     return "Certidão de Óbito";
   }, [tipo]);
-
-  const getStepFields = () => {
-    if (currentStep !== 2) {
-      return stepFields[currentStep];
-    }
-
-    const formato = form.getValues("formato");
-    const fields = ["servicos"];
-
-    if (formato === "fisica") {
-      fields.push(
-        "enderecoEntrega.cep",
-        "enderecoEntrega.rua",
-        "enderecoEntrega.numero",
-        "enderecoEntrega.bairro",
-        "enderecoEntrega.cidade",
-        "enderecoEntrega.estado",
-      );
-    }
-
-    return fields;
-  };
-
-  const onNext = async () => {
-    const valid = await form.trigger(getStepFields() as any);
-    if (valid) nextStep();
-  };
 
   const onSubmit = form.handleSubmit(async (data) => {
     setIsSubmitting(true);
@@ -132,54 +101,59 @@ export function CertidaoWizard({ tipo }: CertidaoWizardProps) {
 
   return (
     <FormProvider {...form}>
-      <form onSubmit={onSubmit} noValidate className="relative pb-32">
-        <div className="rounded-[32px] border border-slate-200 bg-white p-8 shadow-soft">
-          <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.32em] text-brand-600">Solicitação</p>
-              <h1 className="mt-3 text-3xl font-semibold text-slate-950">{title}</h1>
-              <p className="mt-2 max-w-2xl text-sm text-slate-500">
-                Preencha os dados com atenção para localizarmos o registro no cartório correto.
-              </p>
-            </div>
-          </div>
+      <form onSubmit={onSubmit} noValidate>
 
-          <Stepper steps={stepTitles} currentIndex={currentStep} />
-
-          <div className="mt-8 space-y-8">
-            {currentStep === 0 && <StepLocalizacao tipo={tipo} />}
-            {currentStep === 1 && <StepDados />}
-            {currentStep === 2 && <StepServicos />}
-            {currentStep === 3 && <StepContato />}
-          </div>
-          {form.formState.errors.root && (
-            <p className="mt-4 text-sm text-danger-600">{form.formState.errors.root.message}</p>
-          )}
+        {/* Page header */}
+        <div className="mb-8">
+          <p className="text-sm font-semibold uppercase tracking-[0.32em] text-brand-600">Solicitação</p>
+          <h1 className="mt-2 text-3xl font-semibold text-slate-950">{title}</h1>
+          <p className="mt-2 text-sm text-slate-500">
+            Preencha as informações abaixo. Você pode rolar a página e preencher no seu ritmo.
+          </p>
         </div>
 
-        <div className="fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-[#002776] px-4 py-4 sm:px-8">
-          <div className="mx-auto flex max-w-7xl items-center justify-between gap-3">
-            <button
-              type="button"
-              onClick={previousStep}
-              disabled={isFirstStep}
-              className="inline-flex items-center justify-center rounded-[28px] border border-white/30 bg-white/10 px-6 py-4 text-sm font-semibold text-white transition hover:bg-white/20 disabled:cursor-not-allowed disabled:opacity-40"
+        {/* Sections */}
+        <div className="space-y-6">
+          {sections.map(({ number, label, icon: Icon }, idx) => (
+            <div
+              key={number}
+              className="overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-sm"
             >
-              Voltar
-            </button>
-            <div className="flex items-center gap-3">
-              {!isLastStep ? (
-                <Button type="button" onClick={onNext}>
-                  Continuar
-                </Button>
-              ) : (
-                <Button type="submit" disabled={isSubmitting}>
-                  {isSubmitting ? "Enviando..." : "Ir para pagamento"}
-                </Button>
-              )}
+              {/* Section header */}
+              <div className="flex items-center gap-3 border-b border-slate-100 bg-slate-50 px-6 py-4">
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-600 text-sm font-black text-white">
+                  {number}
+                </span>
+                <Icon className="h-4 w-4 text-brand-500" />
+                <span className="text-sm font-semibold text-slate-800">{label}</span>
+              </div>
+
+              {/* Section body */}
+              <div className="p-6">
+                {idx === 0 && <StepLocalizacao tipo={tipo} />}
+                {idx === 1 && <StepDados />}
+                {idx === 2 && <StepServicos />}
+                {idx === 3 && <StepContato />}
+              </div>
             </div>
-          </div>
+          ))}
         </div>
+
+        {/* Root error */}
+        {form.formState.errors.root && (
+          <p className="mt-4 text-sm text-danger-600">{form.formState.errors.root.message}</p>
+        )}
+
+        {/* Submit */}
+        <div className="mt-8">
+          <Button type="submit" disabled={isSubmitting} className="w-full py-5 text-base">
+            {isSubmitting ? "Enviando..." : "Ir para pagamento →"}
+          </Button>
+          <p className="mt-3 text-center text-xs text-slate-400">
+            Seus dados são protegidos com criptografia SSL
+          </p>
+        </div>
+
       </form>
     </FormProvider>
   );
