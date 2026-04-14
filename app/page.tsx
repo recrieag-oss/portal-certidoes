@@ -534,7 +534,7 @@ export default function Home() {
               <h2 className="mt-4 text-3xl font-semibold sm:text-4xl">Solicite sua certidão com tranquilidade</h2>
             </div>
             <div className="flex items-center justify-start md:justify-end">
-              <Link href="/certidao/nascimento" className="inline-flex items-center justify-center rounded-[28px] bg-white px-6 py-4 text-sm font-semibold text-slate-900 transition hover:bg-slate-100">
+              <Link href="/solicitar" className="inline-flex items-center justify-center rounded-[28px] bg-white px-6 py-4 text-sm font-semibold text-slate-900 transition hover:bg-slate-100">
                 Solicitar certidão agora
               </Link>
             </div>
