@@ -3,7 +3,39 @@
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Menu, X, ShieldCheck, Phone, UserCircle2, ChevronDown, FileText, Heart, Ribbon } from "lucide-react";
+import { Menu, X, ShieldCheck, Phone, UserCircle2, ChevronDown, FileText, Heart, Ribbon, Lock, CreditCard, Check } from "lucide-react";
+
+function TrustBar() {
+  return (
+    <div className="w-full border-b border-slate-100 bg-white">
+      <div className="mx-auto flex max-w-7xl items-center justify-center gap-5 overflow-x-auto px-4 py-2 sm:gap-8 md:px-8">
+        <span className="flex shrink-0 items-center gap-1.5 whitespace-nowrap text-[11px] font-semibold tracking-wide text-slate-600">
+          <Lock className="h-3.5 w-3.5 shrink-0 text-green-600" strokeWidth={2.5} />
+          Site 100% Seguro
+        </span>
+        <span className="flex shrink-0 items-center gap-1.5 whitespace-nowrap text-[11px] font-semibold tracking-wide text-slate-600">
+          <ShieldCheck className="h-3.5 w-3.5 shrink-0 text-green-600" strokeWidth={2.5} />
+          Dados Protegidos
+        </span>
+        <span className="flex shrink-0 items-center gap-1.5 whitespace-nowrap text-[11px] font-semibold tracking-wide text-slate-600">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="shrink-0" aria-hidden="true">
+            <path d="M9.5 4.5L4.5 9.5a3.536 3.536 0 0 0 0 5l5 5a3.536 3.536 0 0 0 5 0l5-5a3.536 3.536 0 0 0 0-5l-5-5a3.536 3.536 0 0 0-5 0Z" stroke="#00BDAE" strokeWidth="1.8" strokeLinejoin="round" />
+            <path d="M12 8v8M8 12h8" stroke="#00BDAE" strokeWidth="1.8" strokeLinecap="round" />
+          </svg>
+          PIX
+        </span>
+        <span className="flex shrink-0 items-center gap-1.5 whitespace-nowrap text-[11px] font-semibold tracking-wide text-slate-600">
+          <CreditCard className="h-3.5 w-3.5 shrink-0 text-blue-600" strokeWidth={2.5} />
+          Cartão de Crédito
+        </span>
+        <span className="flex shrink-0 items-center gap-1.5 whitespace-nowrap text-[11px] font-semibold tracking-wide text-slate-600">
+          <Check className="h-3.5 w-3.5 shrink-0 text-green-600" strokeWidth={2.5} />
+          Boleto Bancário
+        </span>
+      </div>
+    </div>
+  );
+}
 
 const certidoes = [
   { label: "Certidão de Nascimento", href: "/certidao/nascimento", icon: FileText,  desc: "Registro civil de nascimento" },
@@ -35,7 +67,9 @@ export function Header() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-white/10 bg-[#002776]/95 backdrop-blur-xl">
+    <header className="sticky top-0 z-40">
+      <TrustBar />
+      <div className="border-b border-white/10 bg-[#002776]/95 backdrop-blur-xl">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-4 py-4 md:px-8">
         <Link href="/" className="flex items-center rounded-2xl bg-[#002776] px-4 py-2.5">
           <Image
@@ -184,6 +218,7 @@ export function Header() {
           </div>
         </div>
       )}
+      </div>
     </header>
   );
 }
