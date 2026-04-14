@@ -327,69 +327,140 @@ const faqs = [
 export default function Home() {
   return (
     <main className="relative overflow-hidden">
-      <section className="mx-auto max-w-7xl px-4 pb-20 pt-14 sm:px-8">
-        <div className="grid gap-12 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
+      {/* ── HERO — copy + mapa ────────────────────────────────────── */}
+      <section className="mx-auto max-w-7xl px-4 pb-16 pt-14 sm:px-8">
+        <div className="grid gap-10 lg:grid-cols-[1fr_1fr] lg:items-center">
+
+          {/* Left — copy */}
           <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
             <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-white">
               <ShieldCheck className="h-4 w-4" /> Ambiente seguro e confiável
             </span>
-            <h1 className="mt-6 max-w-2xl text-4xl font-black tracking-tight text-white sm:mt-8 sm:text-5xl lg:text-6xl">
-              Solicite sua Certidão sem sair de casa
+            <h1 className="mt-6 max-w-xl text-4xl font-black tracking-tight text-white sm:mt-8 sm:text-5xl lg:text-[3.25rem] lg:leading-[1.1]">
+              Precisando de 2ª via de Certidão?
             </h1>
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-blue-100">
-              Certidões de Nascimento, Casamento e Óbito de qualquer cartório do Brasil,
-              com entrega rápida e segura.
+            <p className="mt-6 max-w-lg text-lg leading-8 text-blue-100">
+              Peça sua certidão de forma simples e receba seu documento sem sair de casa.
+              Conectamos você a qualquer cartório do Brasil.
             </p>
-            <div className="mt-10 flex flex-col gap-4 sm:flex-row">
-              <Link href="/sobre" className="inline-flex items-center justify-center rounded-[28px] bg-white px-6 py-4 text-sm font-semibold text-[#002776] transition hover:bg-blue-50">
-                Sobre Nós
-              </Link>
-              <Link href="/acompanhar" className="inline-flex items-center justify-center rounded-[28px] border border-white/30 bg-white/10 px-6 py-4 text-sm font-semibold text-white transition hover:bg-white/20">
-                Acompanhar pedido
+            <div className="mt-10">
+              <Link
+                href="/certidao/nascimento"
+                className="inline-flex items-center justify-center rounded-[28px] bg-[#1a8fe3] px-8 py-4 text-base font-bold text-white shadow-lg transition hover:bg-[#1478c8] hover:shadow-xl"
+              >
+                Pedir Certidão Agora
               </Link>
             </div>
           </motion.div>
 
-          <motion.div initial={{ opacity: 0, x: 32 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6 }} className="flex flex-col gap-4">
-            {certificateTypes.map((card, i) => {
-              const Orb = certificateOrbs[i];
-              return (
-                <motion.div
-                  key={card.title}
-                  initial={{ opacity: 0, x: 40 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.15 + i * 0.12, duration: 0.5 }}
-                >
-                  <Link
-                    href={card.href}
-                    className="group relative flex items-center gap-6 overflow-hidden rounded-[2rem] px-6 py-5 transition-all duration-500 hover:scale-[1.025]"
-                    style={{
-                      background: "linear-gradient(105deg, rgba(4,10,36,0.92) 0%, rgba(10,22,65,0.75) 45%, rgba(255,255,255,0.08) 100%)",
-                      backdropFilter: "blur(22px)",
-                      WebkitBackdropFilter: "blur(22px)",
-                      border: "1px solid rgba(255,255,255,0.12)",
-                      boxShadow: "0 0 0 1px rgba(255,255,255,0.04), 0 8px 40px rgba(0,20,80,0.55), inset 0 1px 0 rgba(255,255,255,0.18)",
-                    }}
-                  >
-                    {/* Inner gloss top highlight */}
-                    <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/25 to-transparent" />
-                    {/* Hover glow */}
-                    <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 rounded-[2rem]"
-                      style={{ boxShadow: "inset 0 0 60px rgba(0,80,200,0.18)" }} />
+          {/* Right — mapa + stats */}
+          <motion.div
+            initial={{ opacity: 0, x: 32 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="flex flex-col items-center"
+          >
+            <div
+              className="w-full overflow-hidden rounded-[32px] p-4 sm:p-6"
+              style={{
+                background: "linear-gradient(135deg, rgba(10,30,90,0.72) 0%, rgba(255,255,255,0.10) 100%)",
+                backdropFilter: "blur(18px)",
+                WebkitBackdropFilter: "blur(18px)",
+                border: "1px solid rgba(255,255,255,0.14)",
+                boxShadow: "0 8px 48px rgba(0,10,60,0.5), inset 0 1px 0 rgba(255,255,255,0.18)",
+              }}
+            >
+              {/* Map + badges */}
+              <div className="relative w-full max-w-sm mx-auto">
+                <Image
+                  src="/MAPA BRASIL.svg"
+                  alt="Mapa do Brasil"
+                  width={500}
+                  height={520}
+                  className="w-full h-auto"
+                />
+                {/* Ping dots overlay */}
+                <svg viewBox="0 0 500 520" className="absolute inset-0 w-full h-full pointer-events-none" aria-hidden="true">
+                  {[
+                    { cx: 148, cy: 195, delay: 0 },
+                    { cx: 326, cy: 108, delay: 0.5 },
+                    { cx: 355, cy: 162, delay: 1.0 },
+                    { cx: 312, cy: 232, delay: 0.3 },
+                    { cx: 256, cy: 268, delay: 0.8 },
+                    { cx: 246, cy: 342, delay: 1.3 },
+                    { cx: 226, cy: 418, delay: 0.6 },
+                  ].map((dot, i) => (
+                    <g key={i}>
+                      <circle cx={dot.cx} cy={dot.cy} r="5" fill="#60a5fa" opacity="0.9" />
+                      <circle cx={dot.cx} cy={dot.cy} r="5" fill="none" stroke="#60a5fa" strokeWidth="1.5">
+                        <animate attributeName="r" values="5;18;5" dur="2.4s" begin={`${dot.delay}s`} repeatCount="indefinite" />
+                        <animate attributeName="opacity" values="0.9;0;0.9" dur="2.4s" begin={`${dot.delay}s`} repeatCount="indefinite" />
+                      </circle>
+                    </g>
+                  ))}
+                </svg>
+                <ActivityBadges />
+              </div>
 
-                    <Orb />
-
-                    <div className="flex-1 min-w-0">
-                      <h2 className="text-xl font-bold text-white tracking-tight">{card.title}</h2>
-                      <p className="mt-1 text-sm leading-relaxed text-blue-200/80">{card.description}</p>
+              {/* Stats row */}
+              <div className="mt-4 grid grid-cols-3 gap-2">
+                {[
+                  { icon: FileText, value: "15.000+", label: "Cartórios no Brasil" },
+                  { icon: Search,   value: "27",      label: "Estados Cobertos" },
+                  { icon: Package,  value: "5.570+",  label: "Municípios Alcançados" },
+                ].map((stat) => {
+                  const Icon = stat.icon;
+                  return (
+                    <div key={stat.label} className="flex flex-col items-center rounded-[16px] py-3 px-2"
+                      style={{ background: "rgba(255,255,255,0.08)" }}>
+                      <Icon className="mb-1 h-4 w-4 text-blue-300" />
+                      <p className="text-lg font-black text-white">{stat.value}</p>
+                      <p className="mt-0.5 text-center text-[9px] leading-tight text-blue-300/80">{stat.label}</p>
                     </div>
-
-                    <ChevronRight className="h-5 w-5 shrink-0 text-white/30 transition-all duration-300 group-hover:translate-x-1 group-hover:text-white/70" />
-                  </Link>
-                </motion.div>
-              );
-            })}
+                  );
+                })}
+              </div>
+            </div>
           </motion.div>
+        </div>
+      </section>
+
+      {/* ── Escolha a certidão ───────────────────────────────────── */}
+      <section className="mx-auto max-w-7xl px-4 pb-16 sm:px-8">
+        <div className="flex flex-col gap-4 sm:grid sm:grid-cols-3">
+          {certificateTypes.map((card, i) => {
+            const Orb = certificateOrbs[i];
+            return (
+              <motion.div
+                key={card.title}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 + i * 0.1, duration: 0.5 }}
+              >
+                <Link
+                  href={card.href}
+                  className="group relative flex items-center gap-5 overflow-hidden rounded-[2rem] px-6 py-5 transition-all duration-500 hover:scale-[1.025]"
+                  style={{
+                    background: "linear-gradient(105deg, rgba(4,10,36,0.92) 0%, rgba(10,22,65,0.75) 45%, rgba(255,255,255,0.08) 100%)",
+                    backdropFilter: "blur(22px)",
+                    WebkitBackdropFilter: "blur(22px)",
+                    border: "1px solid rgba(255,255,255,0.12)",
+                    boxShadow: "0 0 0 1px rgba(255,255,255,0.04), 0 8px 40px rgba(0,20,80,0.55), inset 0 1px 0 rgba(255,255,255,0.18)",
+                  }}
+                >
+                  <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/25 to-transparent" />
+                  <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 rounded-[2rem]"
+                    style={{ boxShadow: "inset 0 0 60px rgba(0,80,200,0.18)" }} />
+                  <Orb />
+                  <div className="flex-1 min-w-0">
+                    <h2 className="text-lg font-bold text-white tracking-tight">{card.title}</h2>
+                    <p className="mt-0.5 text-xs leading-relaxed text-blue-200/80">{card.description}</p>
+                  </div>
+                  <ChevronRight className="h-5 w-5 shrink-0 text-white/30 transition-all duration-300 group-hover:translate-x-1 group-hover:text-white/70" />
+                </Link>
+              </motion.div>
+            );
+          })}
         </div>
       </section>
 
@@ -535,86 +606,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Cobertura Nacional ─────────────────────────────────────── */}
-      <section className="mx-auto max-w-7xl px-4 pb-20 sm:px-8">
-        <div className="overflow-hidden rounded-[40px] bg-white shadow-soft">
-          <div className="grid lg:grid-cols-2">
-            {/* Map side */}
-            <div className="relative flex items-center justify-center bg-slate-50 p-6 sm:p-8">
-              {/* Map + badges container — badges overlay the map on ALL screen sizes */}
-              <div className="relative w-full max-w-sm">
-                <Image
-                  src="/MAPA BRASIL.svg"
-                  alt="Mapa do Brasil"
-                  width={500}
-                  height={520}
-                  className="w-full h-auto"
-                />
-                {/* Ping dots overlay */}
-                <svg viewBox="0 0 500 520" className="absolute inset-0 w-full h-full pointer-events-none" aria-hidden="true">
-                  {[
-                    { cx: 148, cy: 195, delay: 0 },
-                    { cx: 326, cy: 108, delay: 0.5 },
-                    { cx: 355, cy: 162, delay: 1.0 },
-                    { cx: 312, cy: 232, delay: 0.3 },
-                    { cx: 256, cy: 268, delay: 0.8 },
-                    { cx: 246, cy: 342, delay: 1.3 },
-                    { cx: 226, cy: 418, delay: 0.6 },
-                  ].map((dot, i) => (
-                    <g key={i}>
-                      <circle cx={dot.cx} cy={dot.cy} r="5" fill="#002776" opacity="0.9" />
-                      <circle cx={dot.cx} cy={dot.cy} r="5" fill="none" stroke="#002776" strokeWidth="1.5">
-                        <animate attributeName="r" values="5;18;5" dur="2.4s" begin={`${dot.delay}s`} repeatCount="indefinite" />
-                        <animate attributeName="opacity" values="0.9;0;0.9" dur="2.4s" begin={`${dot.delay}s`} repeatCount="indefinite" />
-                      </circle>
-                    </g>
-                  ))}
-                </svg>
-
-                {/* Cycling activity badges — visible on ALL screen sizes, overlaid on map */}
-                <ActivityBadges />
-              </div>
-            </div>
-
-            {/* Text side */}
-            <div className="flex flex-col justify-center p-6 sm:p-10">
-              <p className="text-xs font-bold uppercase tracking-widest text-[#002776]">Cobertura Nacional</p>
-              <h2 className="mt-4 text-3xl font-black text-slate-950 sm:text-4xl">
-                Você não precisa se preocupar com distância ou burocracia
-              </h2>
-              <p className="mt-5 leading-8 text-slate-600">
-                Nossa empresa conecta você a qualquer cartório do Brasil, atuando em todas as regiões do
-                país para localizar, solicitar e agilizar a emissão do seu documento com máxima eficiência.
-                Onde estiver o registro, nós chegamos até ele.
-              </p>
-
-              <div className="mt-8 grid grid-cols-3 gap-2 sm:gap-4">
-                {[
-                  { icon: FileText, value: "15.000+", label: "Cartórios no Brasil" },
-                  { icon: Search,   value: "27",      label: "Estados Cobertos" },
-                  { icon: Package,  value: "5.570+",  label: "Municípios Alcançados" },
-                ].map((stat) => {
-                  const Icon = stat.icon;
-                  return (
-                    <div key={stat.label} className="rounded-[20px] bg-slate-50 p-3 sm:p-4 text-center">
-                      <Icon className="mx-auto mb-1.5 h-4 w-4 sm:h-5 sm:w-5 text-[#002776]" />
-                      <p className="text-lg font-black text-slate-950 sm:text-2xl">{stat.value}</p>
-                      <p className="mt-0.5 text-[10px] leading-tight text-slate-500 sm:text-xs">{stat.label}</p>
-                    </div>
-                  );
-                })}
-              </div>
-
-              <Link
-                href="/certidao/nascimento"
-                className="mt-8 inline-flex items-center justify-center gap-2 rounded-[28px] bg-[#002776] px-8 py-4 text-sm font-semibold text-white transition hover:bg-blue-900"
-              >
-                Solicite sua certidão →
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
 
       <section className="mx-auto max-w-7xl px-4 pb-20 sm:px-8">
         <div className="rounded-[32px] bg-brand-600 px-8 py-12 text-white shadow-soft">
