@@ -322,7 +322,7 @@ export default function Home() {
             </p>
             <div className="mt-10">
               <Link
-                href="/certidao/nascimento"
+                href="/solicitar"
                 className="inline-flex items-center justify-center rounded-[28px] bg-[#1a8fe3] px-8 py-4 text-base font-bold text-white shadow-lg transition hover:bg-[#1478c8] hover:shadow-xl"
               >
                 Pedir Certidão Agora
