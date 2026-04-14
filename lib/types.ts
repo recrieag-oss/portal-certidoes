@@ -68,6 +68,17 @@ export type PedidoResumo = {
   total: number;
 };
 
+export type CheckoutStoragePayload = {
+  tipo: CertidaoType;
+  data: CertidaoFormValues;
+  pedido: Pick<
+    PedidoResumo,
+    "id" | "tipo" | "nomeRegistrado" | "cartorio" | "estado" | "cidade" | "formato"
+  > & {
+    servicos: Array<Pick<ServiceItem, "id">>;
+  };
+};
+
 export type OrderStatus =
   | "recebido"
   | "em_analise"
@@ -111,7 +122,7 @@ export type User = {
   email: string;
   passwordHash: string;
   nome: string;
-  name?: string; // legacy alias
+  name?: string;
   cpf: string;
   whatsapp: string;
   createdAt: string;

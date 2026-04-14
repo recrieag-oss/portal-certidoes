@@ -3,12 +3,13 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
-import { formatCurrency } from "@/lib/utils";
 import { servicosAdicionais } from "@/lib/constants";
+import type { CheckoutStoragePayload } from "@/lib/types";
+import { formatCurrency } from "@/lib/utils";
 
 export function MercadoPagoCheckout() {
   const router = useRouter();
-  const [order, setOrder] = useState<any>(null);
+  const [order, setOrder] = useState<CheckoutStoragePayload | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const isTestMode = !process.env.NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY;
@@ -17,9 +18,17 @@ export function MercadoPagoCheckout() {
     if (typeof window === "undefined") return;
     const stored = window.localStorage.getItem("portal-certidao-form");
     if (stored) {
-      setOrder(JSON.parse(stored));
+      setOrder(JSON.parse(stored) as CheckoutStoragePayload);
     }
   }, []);
+
+  const estimatedTotal = order
+    ? 249.9 +
+      (order.data.servicos || []).reduce((sum, id) => {
+        const service = servicosAdicionais.find((item) => item.id === id);
+        return sum + (service?.price ?? 0);
+      }, 0)
+    : 0;
 
   const handleCheckout = async () => {
     if (!order) {
@@ -33,7 +42,7 @@ export function MercadoPagoCheckout() {
     const additionalItems = (order.data.servicos || []).map((id: string) => {
       const service = servicosAdicionais.find((item) => item.id === id);
       return {
-        title: `Serviço adicional: ${service?.name ?? id}`,
+        title: `Serviço adicional: ${service?.name ?? id}` ,
         quantity: 1,
         unit_price: service?.price ?? 0,
       };
@@ -81,7 +90,7 @@ export function MercadoPagoCheckout() {
       }
 
       window.location.href = data.init_point || data.sandbox_init_point || data.redirect_url;
-    } catch (err) {
+    } catch {
       setError("Não foi possível iniciar o pagamento. Tente novamente mais tarde.");
     } finally {
       setLoading(false);
@@ -89,7 +98,7 @@ export function MercadoPagoCheckout() {
   };
 
   return (
-    <div className="rounded-[32px] border border-slate-200 bg-white p-8 shadow-soft">
+    <div className="rounded-[32px] border border-slate-200 bg-white p-8 shadow-soft lg:sticky lg:top-28">
       <h2 className="text-xl font-semibold text-slate-950">Pagamento Mercado Pago</h2>
       <p className="mt-3 text-sm text-slate-500">
         Você será redirecionado para a página segura do Mercado Pago para concluir o pagamento.
@@ -98,14 +107,14 @@ export function MercadoPagoCheckout() {
       <div className="mt-8 space-y-4">
         <div className="rounded-[24px] bg-slate-50 p-5 text-sm text-slate-700">
           <p className="font-semibold">Valor estimado</p>
-          <p>{order ? formatCurrency(249.9) : "R$ 0,00"}</p>
+          <p>{formatCurrency(estimatedTotal)}</p>
         </div>
         {isTestMode ? (
           <div className="rounded-[24px] border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
             Mercado Pago não está configurado. Você pode simular o pagamento para prosseguir nos testes.
           </div>
         ) : null}
-        <Button onClick={handleCheckout} disabled={loading}>
+        <Button onClick={handleCheckout} disabled={loading} className="w-full">
           {loading ? "Aguarde..." : isTestMode ? "Simular pagamento" : "Pagar com Mercado Pago"}
         </Button>
         {error && <p className="text-sm text-danger-600">{error}</p>}

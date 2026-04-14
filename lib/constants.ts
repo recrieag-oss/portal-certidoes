@@ -81,7 +81,7 @@ export const servicosAdicionais = [
     color: "bg-slate-100",
   },
   {
-    id: "copia_reprográfica",
+    id: "copia_reprografica",
     name: "Cópia Reprográfica",
     description: "Cópia fiel do documento original.",
     price: 99.9,

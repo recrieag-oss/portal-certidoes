@@ -36,20 +36,21 @@ export default function PortalLoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0b1835] to-[#002776] flex flex-col items-center justify-center p-4">
+    <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-4">
       <div className="w-full max-w-md">
-        <Link href="/" className="mb-8 inline-flex items-center gap-2 text-sm text-blue-300 hover:text-white transition-colors">
+        <Link href="/" className="mb-8 inline-flex items-center gap-2 text-sm text-slate-500 hover:text-slate-800 transition-colors">
           <ArrowLeft className="h-4 w-4" /> Voltar ao site
         </Link>
 
-        <div className="overflow-hidden rounded-[28px] bg-white shadow-2xl">
+        <div className="overflow-hidden rounded-[28px] bg-white shadow-sm border border-slate-200">
           {/* Header */}
-          <div className="bg-[#002776] px-8 py-8 text-center">
-            <div className="mx-auto mb-4 w-fit rounded-2xl bg-white/10 px-5 py-2.5">
-              <Image src="/logo.svg" alt="Portal Certidões" width={300} height={68} className="h-8 w-auto" />
+          <div className="relative px-8 pt-8 pb-6 text-center border-b border-slate-100">
+            <div className="absolute inset-x-0 top-0 h-[3px] rounded-t-[28px] bg-[#009B3A]" />
+            <div className="mx-auto mb-4 w-fit">
+              <Image src="/logo.svg" alt="Portal Certidões" width={300} height={68} className="h-9 w-auto" />
             </div>
-            <h1 className="text-xl font-bold text-white">Área do Cliente</h1>
-            <p className="mt-1.5 text-sm text-blue-200">Acompanhe seus pedidos de certidões</p>
+            <h1 className="text-xl font-bold text-slate-900">Área do Cliente</h1>
+            <p className="mt-1.5 text-sm text-slate-500">Acompanhe seus pedidos de certidões</p>
           </div>
 
           {/* Form */}
@@ -59,7 +60,7 @@ export default function PortalLoginPage() {
               <input
                 type="email" required value={email} onChange={(e) => setEmail(e.target.value)}
                 placeholder="seu@email.com"
-                className="w-full rounded-[16px] border border-slate-200 bg-slate-50 px-4 py-3.5 text-sm text-slate-900 outline-none focus:border-[#002776] focus:ring-2 focus:ring-blue-100 transition"
+                className="w-full rounded-[16px] border border-slate-200 bg-slate-50 px-4 py-3.5 text-sm text-slate-900 outline-none focus:border-[#009B3A] focus:ring-2 focus:ring-[#009B3A]/10 transition"
               />
             </div>
 
@@ -69,7 +70,7 @@ export default function PortalLoginPage() {
                 <input
                   type={showPass ? "text" : "password"} required value={senha} onChange={(e) => setSenha(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full rounded-[16px] border border-slate-200 bg-slate-50 px-4 py-3.5 pr-11 text-sm text-slate-900 outline-none focus:border-[#002776] focus:ring-2 focus:ring-blue-100 transition"
+                  className="w-full rounded-[16px] border border-slate-200 bg-slate-50 px-4 py-3.5 pr-11 text-sm text-slate-900 outline-none focus:border-[#009B3A] focus:ring-2 focus:ring-[#009B3A]/10 transition"
                 />
                 <button type="button" onClick={() => setShowPass((v) => !v)}
                   className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
@@ -85,13 +86,13 @@ export default function PortalLoginPage() {
             )}
 
             <div className="flex justify-end">
-              <Link href="/portal/esqueci-senha" className="text-xs text-[#002776] font-medium hover:underline">
+              <Link href="/portal/esqueci-senha" className="text-xs text-[#009B3A] font-medium hover:underline">
                 Esqueceu a senha?
               </Link>
             </div>
 
             <button type="submit" disabled={loading}
-              className="w-full inline-flex items-center justify-center gap-2 rounded-[16px] bg-[#002776] px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-blue-900 disabled:opacity-60">
+              className="w-full inline-flex items-center justify-center gap-2 rounded-[16px] bg-[#009B3A] px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-[#007A2F] disabled:opacity-60">
               {loading
                 ? <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
                 : <LogIn className="h-4 w-4" />}
@@ -99,10 +100,10 @@ export default function PortalLoginPage() {
             </button>
 
             <div className="flex items-center gap-2 rounded-[14px] bg-slate-50 px-4 py-3">
-              <ShieldCheck className="h-4 w-4 shrink-0 text-[#002776]" />
+              <ShieldCheck className="h-4 w-4 shrink-0 text-[#009B3A]" />
               <p className="text-xs text-slate-500">
                 Sua conta é criada automaticamente ao fazer o primeiro pedido.{" "}
-                <Link href="/certidao/nascimento" className="text-[#002776] font-semibold hover:underline">Solicitar agora</Link>
+                <Link href="/certidao/nascimento" className="text-[#009B3A] font-semibold hover:underline">Solicitar agora</Link>
               </p>
             </div>
           </form>

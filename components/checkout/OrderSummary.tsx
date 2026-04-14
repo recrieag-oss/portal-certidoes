@@ -1,30 +1,33 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { formatCurrency } from "@/lib/utils";
 import { servicosAdicionais } from "@/lib/constants";
+import type { CheckoutStoragePayload } from "@/lib/types";
+import { formatCurrency } from "@/lib/utils";
 
 function getItemPrice(id: string) {
   return servicosAdicionais.find((item) => item.id === id)?.price ?? 0;
 }
 
 export function OrderSummary() {
-  const [payload, setPayload] = useState<any>(null);
+  const [payload, setPayload] = useState<CheckoutStoragePayload | null>(null);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
     const item = window.localStorage.getItem("portal-certidao-form");
     if (item) {
-      setPayload(JSON.parse(item));
+      setPayload(JSON.parse(item) as CheckoutStoragePayload);
     }
   }, []);
 
   const summary = useMemo(() => {
     if (!payload) return null;
+
     const services = payload.data.servicos || [];
     const serviceTotal = services.reduce((sum: number, id: string) => sum + getItemPrice(id), 0);
     const baseFee = 249.9;
     const total = baseFee + serviceTotal;
+
     return {
       title: payload.tipo,
       nome: payload.data.nomeCompleto,
@@ -42,13 +45,15 @@ export function OrderSummary() {
   if (!summary) {
     return (
       <div className="rounded-[32px] border border-slate-200 bg-white p-8 shadow-soft">
-        <p className="text-sm text-slate-500">Nenhum pedido encontrado. Complete um formulário de solicitação antes de continuar.</p>
+        <p className="text-sm text-slate-500">
+          Nenhum pedido encontrado. Complete um formulário de solicitação antes de continuar.
+        </p>
       </div>
     );
   }
 
   return (
-    <div className="rounded-[32px] border border-slate-200 bg-white p-8 shadow-soft">
+    <div className="rounded-[32px] border border-slate-200 bg-white p-8 shadow-soft lg:min-h-full">
       <h2 className="text-xl font-semibold text-slate-950">Resumo do pedido</h2>
       <div className="mt-6 space-y-4 text-sm text-slate-600">
         <div className="grid gap-2">
@@ -61,7 +66,7 @@ export function OrderSummary() {
         </div>
         <div className="grid gap-2">
           <span className="font-semibold text-slate-700">Cartório / Cidade / Estado</span>
-          <p>{summary.cartorio} · {summary.cidade} · {summary.estado}</p>
+          <p>{summary.cartorio} ? {summary.cidade} ? {summary.estado}</p>
         </div>
         <div className="grid gap-2">
           <span className="font-semibold text-slate-700">Formato</span>
