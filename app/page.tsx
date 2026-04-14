@@ -527,6 +527,22 @@ export default function Home() {
       </section>
 
       <section className="mx-auto max-w-7xl px-4 pb-20 sm:px-8">
+        <div className="rounded-[32px] bg-brand-600 px-8 py-12 text-white shadow-soft">
+          <div className="grid gap-6 md:grid-cols-[1.5fr_0.8fr] md:items-center">
+            <div>
+              <p className="text-sm uppercase tracking-[0.3em] text-blue-200">Comece agora</p>
+              <h2 className="mt-4 text-3xl font-semibold sm:text-4xl">Solicite sua certidão com tranquilidade</h2>
+            </div>
+            <div className="flex items-center justify-start md:justify-end">
+              <Link href="/certidao/nascimento" className="inline-flex items-center justify-center rounded-[28px] bg-white px-6 py-4 text-sm font-semibold text-slate-900 transition hover:bg-slate-100">
+                Solicitar certidão agora
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-4 pb-20 sm:px-8">
         <div className="rounded-[32px] bg-white p-8 shadow-soft">
           <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
@@ -541,23 +557,6 @@ export default function Home() {
                 <p className="mt-3 text-sm leading-6 text-slate-600">{faq.answer}</p>
               </details>
             ))}
-          </div>
-        </div>
-      </section>
-
-
-      <section className="mx-auto max-w-7xl px-4 pb-20 sm:px-8">
-        <div className="rounded-[32px] bg-brand-600 px-8 py-12 text-white shadow-soft">
-          <div className="grid gap-6 md:grid-cols-[1.5fr_0.8fr] md:items-center">
-            <div>
-              <p className="text-sm uppercase tracking-[0.3em] text-blue-200">Comece agora</p>
-              <h2 className="mt-4 text-3xl font-semibold sm:text-4xl">Solicite sua certidão com tranquilidade</h2>
-            </div>
-            <div className="flex items-center justify-start md:justify-end">
-              <Link href="/certidao/nascimento" className="inline-flex items-center justify-center rounded-[28px] bg-white px-6 py-4 text-sm font-semibold text-slate-900 transition hover:bg-slate-100">
-                Solicitar certidão agora
-              </Link>
-            </div>
           </div>
         </div>
       </section>
