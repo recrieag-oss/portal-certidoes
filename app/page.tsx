@@ -10,7 +10,6 @@ import {
   Search,
   Package,
   ShieldCheck,
-  ChevronRight,
   ClipboardList,
   Wallet,
   MapPin,
@@ -267,28 +266,6 @@ function ObitoOrb() {
   );
 }
 
-const certificateOrbs = [NascimentoOrb, CasamentoOrb, ObitoOrb];
-
-const certificateTypes = [
-  {
-    href: "/certidao/nascimento",
-    title: "Nascimento",
-    description: "Registro civil de nascimento com entrega rápida.",
-    icon: FileText,
-  },
-  {
-    href: "/certidao/casamento",
-    title: "Casamento",
-    description: "Solicite a certidão de casamento em qualquer cartório.",
-    icon: CreditCard,
-  },
-  {
-    href: "/certidao/obito",
-    title: "Óbito",
-    description: "Processo seguro para certidão de óbito.",
-    icon: Package,
-  },
-];
 
 const steps = [
   { label: "Preencha o formulário", icon: FileText },
@@ -425,44 +402,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Escolha a certidão ───────────────────────────────────── */}
-      <section className="mx-auto max-w-7xl px-4 pb-16 sm:px-8">
-        <div className="flex flex-col gap-4 sm:grid sm:grid-cols-3">
-          {certificateTypes.map((card, i) => {
-            const Orb = certificateOrbs[i];
-            return (
-              <motion.div
-                key={card.title}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 + i * 0.1, duration: 0.5 }}
-              >
-                <Link
-                  href={card.href}
-                  className="group relative flex items-center gap-5 overflow-hidden rounded-[2rem] px-6 py-5 transition-all duration-500 hover:scale-[1.025]"
-                  style={{
-                    background: "linear-gradient(105deg, rgba(4,10,36,0.92) 0%, rgba(10,22,65,0.75) 45%, rgba(255,255,255,0.08) 100%)",
-                    backdropFilter: "blur(22px)",
-                    WebkitBackdropFilter: "blur(22px)",
-                    border: "1px solid rgba(255,255,255,0.12)",
-                    boxShadow: "0 0 0 1px rgba(255,255,255,0.04), 0 8px 40px rgba(0,20,80,0.55), inset 0 1px 0 rgba(255,255,255,0.18)",
-                  }}
-                >
-                  <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/25 to-transparent" />
-                  <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 rounded-[2rem]"
-                    style={{ boxShadow: "inset 0 0 60px rgba(0,80,200,0.18)" }} />
-                  <Orb />
-                  <div className="flex-1 min-w-0">
-                    <h2 className="text-lg font-bold text-white tracking-tight">{card.title}</h2>
-                    <p className="mt-0.5 text-xs leading-relaxed text-blue-200/80">{card.description}</p>
-                  </div>
-                  <ChevronRight className="h-5 w-5 shrink-0 text-white/30 transition-all duration-300 group-hover:translate-x-1 group-hover:text-white/70" />
-                </Link>
-              </motion.div>
-            );
-          })}
-        </div>
-      </section>
 
       <section id="como-funciona" className="mx-auto max-w-7xl px-4 pb-20 sm:px-8">
         <div className="relative overflow-hidden rounded-[36px] px-8 py-12 sm:px-12"
