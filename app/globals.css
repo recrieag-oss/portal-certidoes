@@ -2,12 +2,16 @@
 
 :root {
   color-scheme: light;
-  --background: #eff6ff;
-  --surface: #ffffff;
-  --foreground: #0f172a;
-  --muted: #64748b;
-  --border: #e2e8f0;
+  --background: #FFFFFF;
+  --surface: #FFFFFF;
+  --surface-alt: #F5F7FA;
+  --foreground: #0D1B2A;
+  --muted: #5A6478;
+  --border: #DFE5EE;
   --font-sans: var(--font-plus-jakarta);
+  --brand-green: #009B3A;
+  --brand-blue: #002776;
+  --brand-gold: #FEDF00;
 }
 
 html {
@@ -17,7 +21,7 @@ html {
 body {
   margin: 0;
   min-height: 100vh;
-  background: linear-gradient(160deg, #0b1835 0%, #002776 100%);
+  background: #FFFFFF;
   color: var(--foreground);
   font-family: var(--font-sans), Inter, system-ui, sans-serif;
 }
@@ -34,22 +38,23 @@ select {
 }
 
 ::selection {
-  background: rgba(37, 99, 235, 0.18);
-  color: #1e3a8a;
+  background: rgba(0, 155, 58, 0.14);
+  color: #004d1e;
 }
 
 .input-base {
   width: 100%;
   border-radius: 1.5rem;
-  border: 1px solid #e2e8f0;
-  background: #f8fafc;
+  border: 1px solid #DFE5EE;
+  background: #F8FAFC;
   padding: 1rem 1.1rem;
   font-size: 1rem;
-  color: #0f172a;
+  color: #0D1B2A;
   outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
 }
 
 .input-base:focus {
-  border-color: #2563eb;
-  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.12);
+  border-color: #009B3A;
+  box-shadow: 0 0 0 4px rgba(0, 155, 58, 0.10);
 }

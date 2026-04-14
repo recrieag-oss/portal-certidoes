@@ -105,9 +105,9 @@ export function CertidaoWizard({ tipo }: CertidaoWizardProps) {
 
         {/* Page header */}
         <div className="mb-8">
-          <p className="text-xs font-bold uppercase tracking-[0.32em] text-blue-300/70">Solicitação</p>
-          <h1 className="mt-2 text-3xl font-black text-white sm:text-4xl">{title}</h1>
-          <p className="mt-3 text-sm leading-relaxed text-blue-100/70">
+          <p className="text-xs font-bold uppercase tracking-[0.32em] text-[#009B3A]">Solicitação</p>
+          <h1 className="mt-2 text-3xl font-black text-slate-900 sm:text-4xl">{title}</h1>
+          <p className="mt-3 text-sm leading-relaxed text-slate-500">
             Preencha as informações abaixo. Você pode rolar a página e preencher no seu ritmo.
           </p>
         </div>

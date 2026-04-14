@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { CreditCard, Mail, Smartphone } from "lucide-react";
+import { Mail, Smartphone } from "lucide-react";
 
 const links = {
   institucional: [
@@ -57,10 +57,10 @@ export function Footer() {
           <p className="mb-4 text-sm font-semibold uppercase tracking-[0.24em] text-slate-400">Contato</p>
           <div className="space-y-3 text-sm">
             <p className="flex items-center gap-2 text-slate-300">
-              <Mail className="h-4 w-4 text-brand-400" /> contato@portalcertidoes.com
+              <Mail className="h-4 w-4 text-[#009B3A]" /> contato@portalcertidoes.com
             </p>
             <p className="flex items-center gap-2 text-slate-300">
-              <Smartphone className="h-4 w-4 text-brand-400" /> 0800 000 000
+              <Smartphone className="h-4 w-4 text-[#009B3A]" /> 0800 000 000
             </p>
             <p className="text-slate-500">Segunda a sexta, 09h às 18h</p>
           </div>
