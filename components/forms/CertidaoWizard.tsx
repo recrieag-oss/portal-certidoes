@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -20,30 +20,64 @@ const sections = [
   { number: "4", label: "Dados do Solicitante",       icon: User      },
 ];
 
-const defaultValues: CertidaoFormValues = {
-  estado: "",
-  cidade: "",
-  cartorio: "",
-  naoSeiCartorio: false,
-  nomeCompleto: "",
-  cpf: "",
-  dataNascimento: "",
-  nomeMae: "",
-  nomePai: "",
-  livro: "",
-  pagina: "",
-  termo: "",
-  formato: "digital",
-  servicos: [],
-  enderecoEntrega: undefined,
-  nomeSolicitante: "",
-  cpfSolicitante: "",
-  email: "",
-  whatsapp: "",
-  senha: "",
-  confirmarSenha: "",
-  aceitaTermos: false,
-};
+function buildDefaultValues(tipo: CertidaoType): CertidaoFormValues {
+  return {
+    // Localização
+    estado: "",
+    cidade: "",
+    cartorio: "",
+    naoSeiCartorio: false,
+
+    // Interno
+    tipo,
+
+    // Nascimento
+    nomeCompleto: "",
+    cpf: "",
+    dataNascimento: "",
+    nomeMae: "",
+    nomePai: "",
+
+    // Óbito
+    nomeFalecido: "",
+    nomeMaeFalecido: "",
+    nomePaiFalecido: "",
+    dataObito: "",
+
+    // Casamento
+    nomeConjuge1: "",
+    nomeConjuge2: "",
+    dataCasamento: "",
+
+    // Comum
+    livro: "",
+    pagina: "",
+    termo: "",
+    formato: "digital",
+    servicos: [],
+    enderecoEntrega: undefined,
+
+    // Solicitante
+    nomeSolicitante: "",
+    cpfSolicitante: "",
+    email: "",
+    whatsapp: "",
+    senha: "",
+    confirmarSenha: "",
+    aceitaTermos: false,
+  };
+}
+
+/** Derive a human-readable "registered name" for the order summary */
+function deriveNomeRegistrado(tipo: CertidaoType, data: CertidaoFormValues): string {
+  if (tipo === "obito")    return data.nomeFalecido   || "Não informado";
+  if (tipo === "casamento") {
+    const c1 = data.nomeConjuge1 || "";
+    const c2 = data.nomeConjuge2 || "";
+    return c1 && c2 ? `${c1} & ${c2}` : c1 || c2 || "Não informado";
+  }
+  return data.nomeCompleto || "Não informado";
+}
 
 interface CertidaoWizardProps {
   tipo: CertidaoType;
@@ -53,14 +87,19 @@ export function CertidaoWizard({ tipo }: CertidaoWizardProps) {
   const router = useRouter();
   const form = useForm<CertidaoFormValues>({
     resolver: zodResolver(certidaoFormSchema),
-    defaultValues,
+    defaultValues: buildDefaultValues(tipo),
     mode: "onTouched",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Keep hidden "tipo" field in sync (guards against future hot-reloads)
+  useEffect(() => {
+    form.setValue("tipo", tipo, { shouldValidate: false });
+  }, [tipo, form]);
+
   const title = useMemo(() => {
     if (tipo === "nascimento") return "Certidão de Nascimento";
-    if (tipo === "casamento") return "Certidão de Casamento";
+    if (tipo === "casamento")  return "Certidão de Casamento";
     return "Certidão de Óbito";
   }, [tipo]);
 
@@ -71,7 +110,7 @@ export function CertidaoWizard({ tipo }: CertidaoWizardProps) {
       const pedidoResumo = {
         id: pedidoId,
         tipo,
-        nomeRegistrado: data.nomeCompleto,
+        nomeRegistrado: deriveNomeRegistrado(tipo, data),
         cartorio: data.cartorio || "Não informado",
         estado: data.estado,
         cidade: data.cidade,
@@ -131,7 +170,7 @@ export function CertidaoWizard({ tipo }: CertidaoWizardProps) {
               {/* Section body */}
               <div className="p-6">
                 {idx === 0 && <StepLocalizacao tipo={tipo} />}
-                {idx === 1 && <StepDados />}
+                {idx === 1 && <StepDados tipo={tipo} />}
                 {idx === 2 && <StepServicos />}
                 {idx === 3 && <StepContato />}
               </div>

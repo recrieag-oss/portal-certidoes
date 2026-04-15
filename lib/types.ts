@@ -18,11 +18,28 @@ export type LocalizacaoStep = {
 };
 
 export type DadosRegistradoStep = {
-  nomeCompleto: string;
-  cpf: string;
-  dataNascimento: string;
-  nomeMae: string;
+  // Internal — set programmatically by wizard, drives conditional validation
+  tipo?: CertidaoType;
+
+  // ── Nascimento ─────────────────────────────────────────────────
+  nomeCompleto?: string;
+  cpf?: string;
+  dataNascimento?: string;
+  nomeMae?: string;
   nomePai?: string;
+
+  // ── Óbito ──────────────────────────────────────────────────────
+  nomeFalecido?: string;
+  nomeMaeFalecido?: string;
+  nomePaiFalecido?: string;
+  dataObito?: string;
+
+  // ── Casamento ──────────────────────────────────────────────────
+  nomeConjuge1?: string;
+  nomeConjuge2?: string;
+  dataCasamento?: string;
+
+  // ── Comum a todos ──────────────────────────────────────────────
   livro?: string;
   pagina?: string;
   termo?: string;
