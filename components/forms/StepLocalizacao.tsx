@@ -5,6 +5,7 @@ import { useFormContext } from "react-hook-form";
 import { estadosBrasileiros, estadoUFMap } from "@/lib/constants";
 import { CertidaoFormValues, CertidaoType } from "@/lib/types";
 import { MapPin, Building2, CheckCircle2, Loader2, Search } from "lucide-react";
+import { SearchableSelect } from "@/components/ui/SearchableSelect";
 
 type Cartorio = {
   uf: string;
@@ -89,39 +90,38 @@ export function StepLocalizacao({ tipo }: Props) {
     <div className="space-y-6">
       {/* Step 1 – Estado */}
       <div className="grid gap-4 md:grid-cols-2">
-        <label className="space-y-2">
+        <div className="space-y-2">
           <span className="flex items-center gap-1.5 text-sm font-semibold text-slate-700">
             <MapPin className="h-4 w-4 text-brand-500" /> Estado
           </span>
-          <select className={selectClass} {...register("estado")}>
-            <option value="">Selecione o estado</option>
-            {estadosBrasileiros.map((e) => (
-              <option key={e} value={e}>{e}</option>
-            ))}
-          </select>
+          <SearchableSelect
+            options={estadosBrasileiros}
+            value={estado}
+            onChange={(val) => setValue("estado", val, { shouldValidate: true })}
+            placeholder="Digite ou selecione o estado"
+            badges={estadoUFMap}
+          />
           {errors.estado && <p className="text-sm text-danger-600">{errors.estado.message}</p>}
-        </label>
+        </div>
 
         {/* Step 2 – Cidade */}
-        <label className="space-y-2">
+        <div className="space-y-2">
           <span className="flex items-center gap-1.5 text-sm font-semibold text-slate-700">
             <Building2 className="h-4 w-4 text-brand-500" /> Cidade
             {loadingMun && <Loader2 className="h-3.5 w-3.5 animate-spin text-slate-400" />}
           </span>
-          <select
-            className={selectClass}
+          <SearchableSelect
+            options={municipios}
+            value={cidade}
+            onChange={(val) => setValue("cidade", val, { shouldValidate: true })}
+            placeholder={!uf ? "Selecione o estado primeiro" : "Digite ou selecione a cidade"}
             disabled={!uf || loadingMun}
-            {...register("cidade")}
-          >
-            <option value="">
-              {!uf ? "Selecione o estado primeiro" : loadingMun ? "Carregando cidades..." : "Selecione a cidade"}
-            </option>
-            {municipios.map((m) => (
-              <option key={m} value={m}>{m}</option>
-            ))}
-          </select>
+            loading={loadingMun}
+            loadingMessage="Carregando cidades..."
+            noOptionsMessage="Nenhuma cidade encontrada"
+          />
           {errors.cidade && <p className="text-sm text-danger-600">{errors.cidade.message}</p>}
-        </label>
+        </div>
       </div>
 
       {/* Step 3 – Cartório search results */}

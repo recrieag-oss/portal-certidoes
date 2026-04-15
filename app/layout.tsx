@@ -3,6 +3,7 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { SplashScreen } from "@/components/ui/SplashScreen";
+import { TrustStamp } from "@/components/ui/TrustStamp";
 import "./globals.css";
 
 const plusJakarta = Plus_Jakarta_Sans({
@@ -31,6 +32,7 @@ export default function RootLayout({
     <html lang="pt-BR" className={`${plusJakarta.variable} h-full`}>
       <body className="min-h-screen bg-slate-50 text-slate-950 antialiased">
         <SplashScreen />
+        <TrustStamp />
         <Header />
         <div className="min-h-[calc(100vh-8rem)]">{children}</div>
         <Footer />
