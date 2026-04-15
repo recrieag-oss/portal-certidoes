@@ -50,7 +50,11 @@ const navItems = [
   { label: "Suporte",    href: "#suporte" },
 ];
 
-export function Header() {
+interface HeaderProps {
+  user?: { nome: string } | null;
+}
+
+export function Header({ user }: HeaderProps = {}) {
   const [open, setOpen]           = useState(false);
   const [dropOpen, setDropOpen]   = useState(false);
   const [mobileSOlicitar, setMobileSolicitar] = useState(false);
@@ -145,12 +149,22 @@ export function Header() {
             <a href="tel:0800000000" className="inline-flex items-center gap-2 text-sm font-semibold text-slate-700 transition hover:text-[#009B3A]">
               <Phone className="h-4 w-4 text-[#009B3A]" /> 0800 000 000
             </a>
-            <Link
-              href="/portal/login"
-              className="inline-flex items-center gap-2 rounded-full border border-[#002776] px-4 py-2 text-sm font-semibold text-[#002776] transition hover:bg-[#002776]/5"
-            >
-              <UserCircle2 className="h-4 w-4" /> Minha conta
-            </Link>
+            {user ? (
+              <Link
+                href="/portal"
+                className="inline-flex items-center gap-2 rounded-full border border-[#009B3A] bg-[#009B3A]/5 px-4 py-2 text-sm font-semibold text-[#009B3A] transition hover:bg-[#009B3A]/10"
+              >
+                <UserCircle2 className="h-4 w-4" />
+                <span className="max-w-[120px] truncate">{user.nome.split(" ")[0]}</span>
+              </Link>
+            ) : (
+              <Link
+                href="/portal/login"
+                className="inline-flex items-center gap-2 rounded-full border border-[#002776] px-4 py-2 text-sm font-semibold text-[#002776] transition hover:bg-[#002776]/5"
+              >
+                <UserCircle2 className="h-4 w-4" /> Minha conta
+              </Link>
+            )}
           </div>
 
           {/* Mobile hamburger */}
@@ -204,10 +218,23 @@ export function Header() {
 
             <div className="my-4 border-t border-slate-100" />
 
-            <Link href="/portal/login" onClick={() => setOpen(false)}
-              className="flex items-center justify-center gap-2 rounded-2xl bg-[#009B3A] px-4 py-3.5 text-sm font-semibold text-white transition hover:bg-[#007A2F]">
-              <UserCircle2 className="h-4 w-4" /> Minha conta
-            </Link>
+            {user ? (
+              <Link
+                href="/portal"
+                onClick={() => setOpen(false)}
+                className="flex items-center justify-center gap-2 rounded-2xl bg-[#009B3A] px-4 py-3.5 text-sm font-semibold text-white transition hover:bg-[#007A2F]"
+              >
+                <UserCircle2 className="h-4 w-4" /> Meu painel
+              </Link>
+            ) : (
+              <Link
+                href="/portal/login"
+                onClick={() => setOpen(false)}
+                className="flex items-center justify-center gap-2 rounded-2xl bg-[#009B3A] px-4 py-3.5 text-sm font-semibold text-white transition hover:bg-[#007A2F]"
+              >
+                <UserCircle2 className="h-4 w-4" /> Minha conta
+              </Link>
+            )}
 
             <div className="mt-3 flex items-center gap-3">
               <div className="flex flex-1 items-center gap-2 rounded-2xl border border-[#009B3A]/20 bg-[#009B3A]/8 px-4 py-3 text-xs font-medium text-[#009B3A]">

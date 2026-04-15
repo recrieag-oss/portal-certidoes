@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
+import { cookies } from "next/headers";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { SplashScreen } from "@/components/ui/SplashScreen";
 import { TrustStamp } from "@/components/ui/TrustStamp";
+import { getSession } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
 import "./globals.css";
 
 const plusJakarta = Plus_Jakarta_Sans({
@@ -23,17 +26,29 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Read session once per request — drives the header auth state
+  const raw     = cookies().get("session-id")?.value;
+  const session = raw ? await getSession(raw) : null;
+  const dbUser  = session?.role === "client"
+    ? await prisma.user.findUnique({
+        where:  { id: session.userId },
+        select: { nome: true },
+      })
+    : null;
+
+  const authUser = dbUser ? { nome: dbUser.nome } : null;
+
   return (
     <html lang="pt-BR" className={`${plusJakarta.variable} h-full`}>
       <body className="min-h-screen bg-slate-50 text-slate-950 antialiased">
         <SplashScreen />
         <TrustStamp />
-        <Header />
+        <Header user={authUser} />
         <div className="min-h-[calc(100vh-8rem)]">{children}</div>
         <Footer />
       </body>
