@@ -350,14 +350,11 @@ function DadosObito() {
           Data do óbito
         </span>
         <div className="md:max-w-xs">
-          <div className="relative">
-            <Calendar className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
-            <input
-              type="date"
-              className="input-base pl-11"
-              {...register("dataObito")}
-            />
-          </div>
+          <input
+            type="date"
+            className="input-base"
+            {...register("dataObito")}
+          />
         </div>
         {errors.dataObito && (
           <p className="flex items-center gap-1 text-xs text-red-600">
@@ -466,14 +463,11 @@ function DadosCasamento() {
           Data de casamento
         </span>
         <div className="md:max-w-xs">
-          <div className="relative">
-            <Calendar className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
-            <input
-              type="date"
-              className="input-base pl-11"
-              {...register("dataCasamento")}
-            />
-          </div>
+          <input
+            type="date"
+            className="input-base"
+            {...register("dataCasamento")}
+          />
         </div>
         {errors.dataCasamento && (
           <p className="flex items-center gap-1 text-xs text-red-600">
