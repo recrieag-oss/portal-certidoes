@@ -20,7 +20,7 @@ const sections = [
   { number: "4", label: "Dados do Solicitante",       icon: User      },
 ];
 
-function buildDefaultValues(tipo: CertidaoType): CertidaoFormValues {
+function buildDefaultValues(tipo: CertidaoType, user?: AuthUser): CertidaoFormValues {
   return {
     // Localização
     estado: "",
@@ -57,14 +57,15 @@ function buildDefaultValues(tipo: CertidaoType): CertidaoFormValues {
     servicos: [],
     enderecoEntrega: undefined,
 
-    // Solicitante
-    nomeSolicitante: "",
-    cpfSolicitante: "",
-    email: "",
-    whatsapp: "",
-    senha: "",
-    confirmarSenha: "",
-    aceitaTermos: false,
+    // Solicitante — pre-filled when logged in
+    isAuthenticated: !!user,
+    nomeSolicitante: user?.nome     ?? "",
+    cpfSolicitante:  user?.cpf      ?? "",
+    email:           user?.email    ?? "",
+    whatsapp:        user?.whatsapp ?? "",
+    senha:           "",
+    confirmarSenha:  "",
+    aceitaTermos:    false,
   };
 }
 
@@ -79,23 +80,33 @@ function deriveNomeRegistrado(tipo: CertidaoType, data: CertidaoFormValues): str
   return data.nomeCompleto || "Não informado";
 }
 
-interface CertidaoWizardProps {
-  tipo: CertidaoType;
+interface AuthUser {
+  nome: string;
+  cpf: string;
+  email: string;
+  whatsapp: string;
 }
 
-export function CertidaoWizard({ tipo }: CertidaoWizardProps) {
+interface CertidaoWizardProps {
+  tipo: CertidaoType;
+  /** Pre-populated when the requester is already logged in */
+  user?: AuthUser;
+}
+
+export function CertidaoWizard({ tipo, user }: CertidaoWizardProps) {
   const router = useRouter();
   const form = useForm<CertidaoFormValues>({
     resolver: zodResolver(certidaoFormSchema),
-    defaultValues: buildDefaultValues(tipo),
+    defaultValues: buildDefaultValues(tipo, user),
     mode: "onTouched",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Keep hidden "tipo" field in sync (guards against future hot-reloads)
+  // Keep hidden fields in sync (guards against future hot-reloads)
   useEffect(() => {
     form.setValue("tipo", tipo, { shouldValidate: false });
-  }, [tipo, form]);
+    form.setValue("isAuthenticated", !!user, { shouldValidate: false });
+  }, [tipo, user, form]);
 
   const title = useMemo(() => {
     if (tipo === "nascimento") return "Certidão de Nascimento";

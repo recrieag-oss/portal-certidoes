@@ -60,6 +60,7 @@ export type ServicosStep = {
 };
 
 export type ContatoStep = {
+  isAuthenticated?: boolean; // true when user is already logged in
   nomeSolicitante: string;
   cpfSolicitante: string;
   email: string;

@@ -70,6 +70,7 @@ export const certidaoFormSchema = z
       .optional(),
 
     // ── Solicitante ──────────────────────────────────────────────
+    isAuthenticated: z.boolean().optional(),
     nomeSolicitante: z.string().min(1, "Campo obrigatório"),
     cpfSolicitante: z
       .string()
@@ -77,20 +78,36 @@ export const certidaoFormSchema = z
       .refine(isValidCPF, "CPF inválido"),
     email: z.string().email("E-mail inválido"),
     whatsapp: z.string().min(1, "Campo obrigatório"),
-    senha: z.string().min(8, "Senha deve ter pelo menos 8 caracteres"),
-    confirmarSenha: z.string().min(1, "Confirme sua senha"),
+    senha: z.string().optional(),
+    confirmarSenha: z.string().optional(),
     aceitaTermos: z.boolean().refine((value) => value === true, {
       message: "Você precisa aceitar os termos",
     }),
   })
   .superRefine((data, ctx) => {
-    // ── Senhas coincidem ─────────────────────────────────────────
-    if (data.senha && data.confirmarSenha && data.senha !== data.confirmarSenha) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "As senhas não coincidem",
-        path: ["confirmarSenha"],
-      });
+    // ── Senha (apenas para usuários não autenticados) ─────────────
+    if (!data.isAuthenticated) {
+      if (!data.senha || data.senha.length < 8) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Senha deve ter pelo menos 8 caracteres",
+          path: ["senha"],
+        });
+      }
+      if (!data.confirmarSenha) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Confirme sua senha",
+          path: ["confirmarSenha"],
+        });
+      }
+      if (data.senha && data.confirmarSenha && data.senha !== data.confirmarSenha) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "As senhas não coincidem",
+          path: ["confirmarSenha"],
+        });
+      }
     }
 
     const req = (field: string, path: string) => {
