@@ -63,8 +63,8 @@ export default async function AdminPage() {
       </header>
 
       <main className="mx-auto max-w-6xl px-4 py-10 sm:px-8">
-        <div className="mb-8">
-          <h1 className="text-2xl font-bold text-white">Gestão de Pedidos</h1>
+        <div className="mb-6 sm:mb-8">
+          <h1 className="text-xl font-bold text-white sm:text-2xl">Gestão de Pedidos</h1>
           <p className="mt-1 text-sm text-slate-400">Gerencie, atualize e notifique clientes</p>
         </div>
 
@@ -101,49 +101,90 @@ export default async function AdminPage() {
               <p className="font-semibold text-slate-400">Nenhum pedido registrado</p>
             </div>
           ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b border-white/5 text-left">
-                    {["Pedido","Tipo","Solicitante","Cidade","Data","Status",""].map((h) => (
-                      <th key={h} className="px-6 py-3.5 text-xs font-semibold uppercase tracking-wider text-slate-500">{h}</th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-white/5">
-                  {orders.map((order) => {
-                    const status = order.status as OrderStatus;
-                    const st     = STATUS_STYLE[status];
-                    const fd     = order.formData as Record<string, string>;
-                    return (
-                      <tr key={order.id} className="group transition hover:bg-white/5">
-                        <td className="px-6 py-4 font-bold text-blue-400">{order.id}</td>
-                        <td className="px-6 py-4 text-slate-300 capitalize">{TIPO_LABEL[order.tipo] ?? order.tipo}</td>
-                        <td className="px-6 py-4 text-slate-300">{fd.nomeSolicitante}</td>
-                        <td className="px-6 py-4 text-slate-400 text-xs">
-                          {fd.cidade}{fd.estado ? ` – ${fd.estado}` : ""}
-                        </td>
-                        <td className="px-6 py-4 text-slate-400 text-xs whitespace-nowrap">
-                          {new Date(order.createdAt).toLocaleDateString("pt-BR")}
-                        </td>
-                        <td className="px-6 py-4">
-                          <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold ${st.bg} ${st.text}`}>
-                            <span className={`h-1.5 w-1.5 rounded-full ${st.dot}`} />
-                            {ORDER_STATUS_LABELS[status]}
-                          </span>
-                        </td>
-                        <td className="px-6 py-4">
-                          <Link href={`/admin/pedido/${order.id}`}
-                            className="inline-flex items-center gap-1 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-semibold text-slate-300 transition hover:bg-white/10">
-                            Gerenciar <ChevronRight className="h-3 w-3" />
-                          </Link>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
+            <>
+              {/* ── Mobile card list (< md) ─────────────────────── */}
+              <ul className="divide-y divide-white/5 md:hidden">
+                {orders.map((order) => {
+                  const status = order.status as OrderStatus;
+                  const st     = STATUS_STYLE[status];
+                  const fd     = order.formData as Record<string, string>;
+                  return (
+                    <li key={order.id}>
+                      <Link
+                        href={`/admin/pedido/${order.id}`}
+                        className="flex items-center gap-3 px-4 py-4 transition hover:bg-white/5 active:bg-white/10"
+                      >
+                        <div className="min-w-0 flex-1">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <span className="text-sm font-bold text-blue-400">{order.id}</span>
+                            <span className={`inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[10px] font-semibold ${st.bg} ${st.text}`}>
+                              <span className={`h-1.5 w-1.5 rounded-full ${st.dot}`} />
+                              {ORDER_STATUS_LABELS[status]}
+                            </span>
+                          </div>
+                          <p className="mt-0.5 truncate text-xs text-slate-300">
+                            {fd.nomeSolicitante || "—"}
+                          </p>
+                          <p className="mt-0.5 text-[11px] text-slate-500">
+                            {TIPO_LABEL[order.tipo] ?? order.tipo}
+                            {" · "}
+                            {fd.cidade}{fd.estado ? ` – ${fd.estado}` : ""}
+                            {" · "}
+                            {new Date(order.createdAt).toLocaleDateString("pt-BR")}
+                          </p>
+                        </div>
+                        <ChevronRight className="h-4 w-4 shrink-0 text-slate-600" />
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+
+              {/* ── Desktop table (≥ md) ────────────────────────── */}
+              <div className="hidden overflow-x-auto md:block">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-white/5 text-left">
+                      {["Pedido","Tipo","Solicitante","Cidade","Data","Status",""].map((h) => (
+                        <th key={h} className="px-6 py-3.5 text-xs font-semibold uppercase tracking-wider text-slate-500">{h}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-white/5">
+                    {orders.map((order) => {
+                      const status = order.status as OrderStatus;
+                      const st     = STATUS_STYLE[status];
+                      const fd     = order.formData as Record<string, string>;
+                      return (
+                        <tr key={order.id} className="group transition hover:bg-white/5">
+                          <td className="px-6 py-4 font-bold text-blue-400">{order.id}</td>
+                          <td className="px-6 py-4 text-slate-300 capitalize">{TIPO_LABEL[order.tipo] ?? order.tipo}</td>
+                          <td className="px-6 py-4 text-slate-300">{fd.nomeSolicitante}</td>
+                          <td className="px-6 py-4 text-xs text-slate-400">
+                            {fd.cidade}{fd.estado ? ` – ${fd.estado}` : ""}
+                          </td>
+                          <td className="whitespace-nowrap px-6 py-4 text-xs text-slate-400">
+                            {new Date(order.createdAt).toLocaleDateString("pt-BR")}
+                          </td>
+                          <td className="px-6 py-4">
+                            <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold ${st.bg} ${st.text}`}>
+                              <span className={`h-1.5 w-1.5 rounded-full ${st.dot}`} />
+                              {ORDER_STATUS_LABELS[status]}
+                            </span>
+                          </td>
+                          <td className="px-6 py-4">
+                            <Link href={`/admin/pedido/${order.id}`}
+                              className="inline-flex items-center gap-1 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-semibold text-slate-300 transition hover:bg-white/10">
+                              Gerenciar <ChevronRight className="h-3 w-3" />
+                            </Link>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </>
           )}
         </div>
       </main>

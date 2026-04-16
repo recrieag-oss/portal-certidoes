@@ -44,7 +44,7 @@ export function OrderSummary() {
 
   if (!summary) {
     return (
-      <div className="rounded-[32px] border border-slate-200 bg-white p-8 shadow-soft">
+      <div className="rounded-[24px] border border-slate-200 bg-white p-5 shadow-soft sm:rounded-[32px] sm:p-8">
         <p className="text-sm text-slate-500">
           Nenhum pedido encontrado. Complete um formulário de solicitação antes de continuar.
         </p>
@@ -53,8 +53,8 @@ export function OrderSummary() {
   }
 
   return (
-    <div className="rounded-[32px] border border-slate-200 bg-white p-8 shadow-soft lg:min-h-full">
-      <h2 className="text-xl font-semibold text-slate-950">Resumo do pedido</h2>
+    <div className="rounded-[24px] border border-slate-200 bg-white p-5 shadow-soft sm:rounded-[32px] sm:p-8 lg:min-h-full">
+      <h2 className="text-lg font-semibold text-slate-950 sm:text-xl">Resumo do pedido</h2>
       <div className="mt-6 space-y-4 text-sm text-slate-600">
         <div className="grid gap-2">
           <span className="font-semibold text-slate-700">Tipo de certidão</span>

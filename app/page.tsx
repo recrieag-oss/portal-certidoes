@@ -137,25 +137,25 @@ export default function Home() {
     <main className="relative overflow-hidden bg-white">
 
       {/* ── HERO ─────────────────────────────────────────────────── */}
-      <section className="mx-auto max-w-7xl px-4 pb-12 pt-10 sm:px-8 sm:pb-16 sm:pt-14">
-        <div className="grid gap-10 lg:grid-cols-[1fr_1fr] lg:items-center">
+      <section className="mx-auto max-w-7xl px-4 pb-10 pt-8 sm:px-8 sm:pb-16 sm:pt-14">
+        <div className="grid gap-8 lg:grid-cols-[1fr_1fr] lg:items-center lg:gap-12">
 
           {/* Left — copy */}
           <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
             <span className="inline-flex items-center gap-2 rounded-full border border-[#009B3A]/25 bg-[#009B3A]/8 px-3 py-1.5 text-xs font-semibold text-[#009B3A] sm:px-4 sm:py-2 sm:text-sm">
               <ShieldCheck className="h-3.5 w-3.5 sm:h-4 sm:w-4" /> Ambiente seguro e confiável
             </span>
-            <h1 className="mt-5 max-w-xl text-3xl font-black tracking-tight text-slate-900 sm:mt-8 sm:text-5xl lg:text-[3.25rem] lg:leading-[1.1]">
+            <h1 className="mt-4 max-w-xl text-[1.75rem] font-black leading-[1.15] tracking-tight text-slate-900 sm:mt-6 sm:text-5xl lg:text-[3.25rem] lg:leading-[1.1]">
               Precisando de 2ª via de Certidão?
             </h1>
-            <p className="mt-4 max-w-lg text-base leading-7 text-slate-600 sm:mt-6 sm:text-lg sm:leading-8">
+            <p className="mt-3 max-w-lg text-sm leading-7 text-slate-600 sm:mt-5 sm:text-lg sm:leading-8">
               Peça sua certidão de forma simples e receba seu documento sem sair de casa.
               Conectamos você a qualquer cartório do Brasil.
             </p>
-            <div className="mt-8 sm:mt-10">
+            <div className="mt-6 sm:mt-8">
               <Link
                 href="/solicitar"
-                className="inline-flex w-full items-center justify-center rounded-[28px] bg-[#009B3A] px-8 py-4 text-base font-bold text-white shadow-green-glow transition hover:bg-[#007A2F] hover:shadow-lg sm:w-auto"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-[28px] bg-[#009B3A] px-8 py-4 text-base font-bold text-white shadow-green-glow transition hover:bg-[#007A2F] hover:shadow-lg active:scale-[0.98] sm:w-auto"
               >
                 Pedir Certidão Agora
               </Link>
@@ -170,21 +170,22 @@ export default function Home() {
             className="flex flex-col items-center"
           >
             <div
-              className="w-full overflow-hidden rounded-[32px] bg-white p-4 sm:p-6"
+              className="w-full overflow-hidden rounded-[24px] bg-white p-3 sm:rounded-[32px] sm:p-6"
               style={{
                 border: "1px solid #DFE5EE",
                 boxShadow: "0 8px 40px rgba(0,39,118,0.08)",
               }}
             >
-              <div className="relative w-full max-w-sm mx-auto">
+              {/* Map container — clips badges that extend beyond its bounds */}
+              <div className="relative mx-auto w-full max-w-sm overflow-hidden">
                 <Image
                   src="/MAPA BRASIL.svg"
-                  alt="Mapa do Brasil"
+                  alt="Mapa do Brasil — cobertura nacional"
                   width={500}
                   height={520}
-                  className="w-full h-auto"
+                  className="h-auto w-full"
                 />
-                <svg viewBox="0 0 500 520" className="absolute inset-0 w-full h-full pointer-events-none" aria-hidden="true">
+                <svg viewBox="0 0 500 520" className="pointer-events-none absolute inset-0 h-full w-full" aria-hidden="true">
                   {[
                     { cx: 148, cy: 195, delay: 0 },
                     { cx: 326, cy: 108, delay: 0.5 },
@@ -207,7 +208,7 @@ export default function Home() {
               </div>
 
               {/* Stats */}
-              <div className="mt-4 grid grid-cols-3 gap-2">
+              <div className="mt-3 grid grid-cols-3 gap-2 sm:mt-4">
                 {[
                   { icon: FileText, value: "15.000+", label: "Cartórios no Brasil" },
                   { icon: Search,   value: "27",      label: "Estados Cobertos" },
@@ -215,10 +216,10 @@ export default function Home() {
                 ].map((stat) => {
                   const Icon = stat.icon;
                   return (
-                    <div key={stat.label} className="flex flex-col items-center rounded-[16px] bg-[#F5F7FA] py-3 px-2">
-                      <Icon className="mb-1 h-4 w-4 text-[#009B3A]" />
-                      <p className="text-lg font-black text-slate-900">{stat.value}</p>
-                      <p className="mt-0.5 text-center text-[9px] leading-tight text-slate-500">{stat.label}</p>
+                    <div key={stat.label} className="flex flex-col items-center rounded-[14px] bg-[#F5F7FA] px-2 py-2.5 sm:rounded-[16px] sm:py-3">
+                      <Icon className="mb-1 h-3.5 w-3.5 text-[#009B3A] sm:h-4 sm:w-4" />
+                      <p className="text-base font-black text-slate-900 sm:text-lg">{stat.value}</p>
+                      <p className="mt-0.5 text-center text-[8px] leading-tight text-slate-500 sm:text-[9px]">{stat.label}</p>
                     </div>
                   );
                 })}
@@ -229,12 +230,12 @@ export default function Home() {
       </section>
 
       {/* ── COMO FUNCIONA ─────────────────────────────────────────── */}
-      <section id="como-funciona" className="bg-[#F5F7FA] px-4 py-14 sm:px-8 sm:py-20">
+      <section id="como-funciona" className="bg-[#F5F7FA] px-4 py-12 sm:px-8 sm:py-20">
         <div className="mx-auto max-w-7xl">
-          <div className="mb-12 flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
+          <div className="mb-8 flex flex-col gap-1 sm:mb-12 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="text-xs font-bold uppercase tracking-[0.3em] text-[#009B3A]">Processo simples</p>
-              <h2 className="mt-2 text-3xl font-black text-slate-900 sm:text-4xl">Como funciona</h2>
+              <h2 className="mt-2 text-2xl font-black text-slate-900 sm:text-4xl">Como funciona</h2>
             </div>
             <p className="text-sm text-slate-500 sm:text-right">Do pedido à entrega,<br className="hidden sm:block" /> tudo em poucos passos.</p>
           </div>

@@ -112,3 +112,26 @@ button, a {
 ::-webkit-scrollbar-thumb:hover {
   background: #94A3B8;
 }
+
+/* ── no-scrollbar: hide scrollbar, keep scrollability ── */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE / Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+
+/* ── active:scale feedback for CTAs on touch ─────────── */
+@media (hover: none) {
+  .hover\:shadow-lg:active {
+    box-shadow: var(--tw-shadow-lg);
+  }
+}
+
+/* ── Typography scale adjustment for very small screens ─ */
+@media (max-width: 360px) {
+  html {
+    font-size: 15px;
+  }
+}
