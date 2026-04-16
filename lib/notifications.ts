@@ -3,14 +3,17 @@ import { Order, User, ORDER_STATUS_LABELS, OrderStatus } from "./types";
 
 // ─── SMTP Transporter ─────────────────────────────────────────────────────────
 function getTransporter() {
+  const port   = Number(process.env.SMTP_PORT) || 587;
+  const secure = port === 465;          // SSL em 465, STARTTLS em 587
   return nodemailer.createTransport({
-    host: process.env.SMTP_HOST || "smtp.gmail.com",
-    port: Number(process.env.SMTP_PORT) || 587,
-    secure: false,
+    host: process.env.SMTP_HOST,
+    port,
+    secure,
     auth: {
       user: process.env.SMTP_USER || "",
       pass: process.env.SMTP_PASS || "",
     },
+    tls: { rejectUnauthorized: false },  // aceita cert. do TurboCloud
   });
 }
 
