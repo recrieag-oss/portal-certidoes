@@ -1,26 +1,31 @@
-const { createServer } = require('http');
-const { parse } = require('url');
-const next = require('next');
+const fs = require('fs');
+const path = require('path');
 
-const dev = process.env.NODE_ENV !== 'production';
-const hostname = 'localhost';
-const port = parseInt(process.env.PORT, 10) || 3000;
+// Force correct working directory
+process.chdir(__dirname);
+process.env.PORT = process.env.PORT || '3000';
+process.env.HOSTNAME = '0.0.0.0';
 
-const app = next({ dev, hostname, port, dir: __dirname });
-const handle = app.getRequestHandler();
+// Symlink static assets into standalone directory (required by Next.js standalone)
+const standaloneDir = path.join(__dirname, '.next', 'standalone');
+const staticSrc  = path.join(__dirname, '.next', 'static');
+const staticDest = path.join(standaloneDir, '.next', 'static');
+const publicSrc  = path.join(__dirname, 'public');
+const publicDest = path.join(standaloneDir, 'public');
 
-app.prepare().then(() => {
-  createServer(async (req, res) => {
-    try {
-      const parsedUrl = parse(req.url, true);
-      await handle(req, res, parsedUrl);
-    } catch (err) {
-      console.error('Error occurred handling', req.url, err);
-      res.statusCode = 500;
-      res.end('internal server error');
+function ensureLink(src, dest) {
+  try {
+    if (!fs.existsSync(dest)) {
+      fs.symlinkSync(src, dest, 'dir');
+      console.log('Symlinked:', src, '->', dest);
     }
-  }).listen(port, (err) => {
-    if (err) throw err;
-    console.log(`> Ready on http://${hostname}:${port}`);
-  });
-});
+  } catch (e) {
+    console.error('Symlink error:', e.message);
+  }
+}
+
+ensureLink(staticSrc,  staticDest);
+ensureLink(publicSrc,  publicDest);
+
+// Launch standalone Next.js server
+require('./.next/standalone/server.js');
