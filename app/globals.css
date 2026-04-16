@@ -16,14 +16,23 @@
 
 html {
   scroll-behavior: smooth;
+  /* Prevent horizontal overflow on all devices */
+  overflow-x: hidden;
+  max-width: 100%;
 }
 
 body {
   margin: 0;
   min-height: 100vh;
+  min-height: 100dvh; /* dynamic viewport on mobile browsers */
   background: #FFFFFF;
   color: var(--foreground);
-  font-family: var(--font-sans), Inter, system-ui, sans-serif;
+  font-family: var(--font-sans), system-ui, sans-serif;
+  overflow-x: hidden;
+  /* Improve text rendering on mobile */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 * {
@@ -37,24 +46,69 @@ select {
   font: inherit;
 }
 
+/* ── Prevent iOS double-tap zoom on buttons/links ── */
+button, a {
+  touch-action: manipulation;
+}
+
+/* ── Minimum tap target size (Apple HIG / Google Material) ── */
+.tap-target {
+  min-height: 44px;
+  min-width: 44px;
+}
+
 ::selection {
   background: rgba(0, 155, 58, 0.14);
   color: #004d1e;
 }
 
+/* ── Input base ─────────────────────────────────── */
 .input-base {
   width: 100%;
   border-radius: 1.5rem;
   border: 1px solid #DFE5EE;
   background: #F8FAFC;
-  padding: 1rem 1.1rem;
-  font-size: 1rem;
+  padding: 0.875rem 1.1rem;   /* slightly shorter than before — better on mobile */
+  font-size: 1rem;             /* 16px: prevents iOS auto-zoom on focus */
+  line-height: 1.5;
   color: #0D1B2A;
   outline: none;
   transition: border-color 0.15s, box-shadow 0.15s;
+  /* Ensure minimum touch target height */
+  min-height: 48px;
 }
 
 .input-base:focus {
   border-color: #009B3A;
   box-shadow: 0 0 0 4px rgba(0, 155, 58, 0.10);
+}
+
+.input-base::placeholder {
+  color: #94A3B8;
+}
+
+/* ── Safe area padding (iPhone notch / home bar) ── */
+.safe-pb {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* ── Smooth scroll anchor offset for sticky header ── */
+[id] {
+  scroll-margin-top: 88px;
+}
+
+/* ── Scrollbar styling (WebKit) ─────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
 }

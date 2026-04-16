@@ -75,7 +75,7 @@ export function StepContato() {
   /* ── Guest: full registration form ──────────────────────────── */
   return (
     <div className="space-y-6">
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-4 sm:grid-cols-2">
         <label className="space-y-2">
           <span className="text-sm font-semibold text-slate-700">Nome do solicitante</span>
           <input
@@ -102,7 +102,7 @@ export function StepContato() {
         </label>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-4 sm:grid-cols-2">
         <label className="space-y-2">
           <span className="text-sm font-semibold text-slate-700">E-mail para notificações</span>
           <input
@@ -130,11 +130,11 @@ export function StepContato() {
         </label>
       </div>
 
-      <div className="rounded-[24px] border border-brand-100 bg-brand-50 p-6">
+      <div className="rounded-[20px] sm:rounded-[24px] border border-brand-100 bg-brand-50 p-4 sm:p-6">
         <p className="mb-4 text-sm font-semibold text-slate-800">
           Acesso ao portal de acompanhamento
         </p>
-        <div className="grid gap-4 md:grid-cols-2">
+        <div className="grid gap-4 sm:grid-cols-2">
           <label className="space-y-2">
             <span className="text-sm font-semibold text-slate-700">Senha</span>
             <input

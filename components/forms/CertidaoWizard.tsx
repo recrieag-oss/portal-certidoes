@@ -154,32 +154,32 @@ export function CertidaoWizard({ tipo, user }: CertidaoWizardProps) {
       <form onSubmit={onSubmit} noValidate>
 
         {/* Page header */}
-        <div className="mb-8">
+        <div className="mb-6 sm:mb-8">
           <p className="text-xs font-bold uppercase tracking-[0.32em] text-[#009B3A]">Solicitação</p>
-          <h1 className="mt-2 text-3xl font-black text-slate-900 sm:text-4xl">{title}</h1>
-          <p className="mt-3 text-sm leading-relaxed text-slate-500">
+          <h1 className="mt-2 text-2xl font-black text-slate-900 sm:text-3xl lg:text-4xl">{title}</h1>
+          <p className="mt-2 text-sm leading-relaxed text-slate-500 sm:mt-3">
             Preencha as informações abaixo. Você pode rolar a página e preencher no seu ritmo.
           </p>
         </div>
 
         {/* Sections */}
-        <div className="space-y-6">
+        <div className="space-y-4 sm:space-y-6">
           {sections.map(({ number, label, icon: Icon }, idx) => (
             <div
               key={number}
-              className="overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-sm"
+              className="overflow-hidden rounded-[20px] sm:rounded-[28px] border border-slate-200 bg-white shadow-sm"
             >
               {/* Section header */}
-              <div className="flex items-center gap-3 border-b border-slate-100 bg-slate-50 px-6 py-4">
-                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-600 text-sm font-black text-white">
+              <div className="flex items-center gap-2.5 sm:gap-3 border-b border-slate-100 bg-slate-50 px-4 py-3.5 sm:px-6 sm:py-4">
+                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-brand-600 text-xs font-black text-white sm:h-8 sm:w-8 sm:text-sm">
                   {number}
                 </span>
-                <Icon className="h-4 w-4 text-brand-500" />
-                <span className="text-sm font-semibold text-slate-800">{label}</span>
+                <Icon className="h-3.5 w-3.5 text-brand-500 sm:h-4 sm:w-4" />
+                <span className="text-xs font-semibold text-slate-800 sm:text-sm">{label}</span>
               </div>
 
               {/* Section body */}
-              <div className="p-6">
+              <div className="p-4 sm:p-6">
                 {idx === 0 && <StepLocalizacao tipo={tipo} />}
                 {idx === 1 && <StepDados tipo={tipo} />}
                 {idx === 2 && <StepServicos />}
@@ -195,8 +195,8 @@ export function CertidaoWizard({ tipo, user }: CertidaoWizardProps) {
         )}
 
         {/* Submit */}
-        <div className="mt-8">
-          <Button type="submit" disabled={isSubmitting} className="w-full py-5 text-base">
+        <div className="mt-6 sm:mt-8">
+          <Button type="submit" disabled={isSubmitting} className="w-full py-4 text-base sm:py-5">
             {isSubmitting ? "Enviando..." : "Ir para pagamento →"}
           </Button>
           <p className="mt-3 text-center text-xs text-slate-400">

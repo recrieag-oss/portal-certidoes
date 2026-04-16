@@ -78,7 +78,7 @@ export default async function PortalPedidoPage({ params }: { params: { id: strin
         </div>
       </div>
 
-      <main className="mx-auto max-w-5xl px-4 py-10 sm:px-8">
+      <main className="mx-auto max-w-5xl px-4 py-7 sm:px-8 sm:py-10">
         <Link
           href="/portal"
           className="mb-6 inline-flex items-center gap-2 text-sm font-medium text-slate-500 transition hover:text-slate-900"
@@ -88,7 +88,7 @@ export default async function PortalPedidoPage({ params }: { params: { id: strin
 
         {/* Payment pending banner */}
         {status === "recebido" && (
-          <div className="mb-6 flex items-center justify-between gap-4 rounded-[20px] bg-amber-50 border border-amber-200 px-6 py-4">
+          <div className="mb-6 flex flex-col gap-3 rounded-[20px] bg-amber-50 border border-amber-200 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:px-6">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-amber-100">
                 <CreditCard className="h-5 w-5 text-amber-600" />
@@ -100,7 +100,7 @@ export default async function PortalPedidoPage({ params }: { params: { id: strin
             </div>
             <button
               disabled
-              className="flex shrink-0 cursor-not-allowed items-center gap-2 rounded-full bg-amber-500 px-5 py-2.5 text-sm font-bold text-white opacity-60"
+              className="flex w-full cursor-not-allowed items-center justify-center gap-2 rounded-full bg-amber-500 px-5 py-2.5 text-sm font-bold text-white opacity-60 sm:w-auto sm:shrink-0"
             >
               <CreditCard className="h-4 w-4" /> Pagar para confirmar
             </button>
@@ -109,7 +109,7 @@ export default async function PortalPedidoPage({ params }: { params: { id: strin
 
         {/* PDF download banner */}
         {status === "finalizado" && order.pdfPath && (
-          <div className="mb-6 flex items-center justify-between gap-4 rounded-[20px] bg-emerald-50 border border-emerald-200 px-6 py-4">
+          <div className="mb-6 flex flex-col gap-3 rounded-[20px] bg-emerald-50 border border-emerald-200 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:px-6">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-emerald-100">
                 <FileText className="h-5 w-5 text-emerald-600" />
@@ -121,7 +121,7 @@ export default async function PortalPedidoPage({ params }: { params: { id: strin
             </div>
             <a
               href={`/api/orders/${order.id}/download`}
-              className="flex shrink-0 items-center gap-2 rounded-full bg-[#009B3A] px-5 py-2.5 text-sm font-bold text-white transition hover:bg-[#007A2F]"
+              className="flex w-full items-center justify-center gap-2 rounded-full bg-[#009B3A] px-5 py-2.5 text-sm font-bold text-white transition hover:bg-[#007A2F] sm:w-auto sm:shrink-0"
             >
               <Download className="h-4 w-4" /> Baixar PDF
             </a>
@@ -134,21 +134,21 @@ export default async function PortalPedidoPage({ params }: { params: { id: strin
           <div className="space-y-5">
 
             {/* Header card */}
-            <div className="overflow-hidden rounded-[24px] border border-slate-200 bg-white shadow-sm">
+            <div className="overflow-hidden rounded-[20px] sm:rounded-[24px] border border-slate-200 bg-white shadow-sm">
               {/* Green accent bar */}
               <div className="h-[3px] bg-[#009B3A]" />
-              <div className="p-6">
+              <div className="p-4 sm:p-6">
                 <div className="flex items-start justify-between gap-4">
                   <div>
                     <p className="text-xs font-bold uppercase tracking-[0.28em] text-[#009B3A]">Pedido</p>
-                    <h1 className="mt-1 text-2xl font-black text-slate-900">{order.id}</h1>
-                    <p className="mt-1 text-sm text-slate-400 capitalize">
+                    <h1 className="mt-1 text-xl font-black text-slate-900 sm:text-2xl">{order.id}</h1>
+                    <p className="mt-1 text-xs text-slate-400 capitalize sm:text-sm">
                       Certidão de {TIPO_LABEL[order.tipo] ?? order.tipo}
                       {" · "}
                       {new Date(order.createdAt).toLocaleDateString("pt-BR")}
                     </p>
                   </div>
-                  <span className={`shrink-0 rounded-full border px-3 py-1.5 text-xs font-bold ${st.ring} ${st.bg} ${st.text}`}>
+                  <span className={`shrink-0 rounded-full border px-2.5 py-1 text-xs font-bold sm:px-3 sm:py-1.5 ${st.ring} ${st.bg} ${st.text}`}>
                     {ORDER_STATUS_LABELS[status]}
                   </span>
                 </div>

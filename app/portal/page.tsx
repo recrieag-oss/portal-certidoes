@@ -81,16 +81,16 @@ export default async function PortalPage() {
         </div>
       </div>
 
-      <main className="mx-auto max-w-5xl px-4 py-10 sm:px-8">
+      <main className="mx-auto max-w-5xl px-4 py-7 sm:px-8 sm:py-10">
 
         {/* Welcome */}
-        <div className="mb-8">
+        <div className="mb-6 sm:mb-8">
           <p className="text-xs font-bold uppercase tracking-[0.28em] text-[#009B3A]">Bem-vindo de volta</p>
-          <h1 className="mt-1.5 text-3xl font-black text-slate-900">{user.nome}</h1>
+          <h1 className="mt-1.5 text-2xl font-black text-slate-900 sm:text-3xl">{user.nome}</h1>
         </div>
 
         {/* Stats */}
-        <div className="mb-8 grid grid-cols-3 gap-4">
+        <div className="mb-8 grid grid-cols-3 gap-3 sm:gap-4">
           {[
             { label: "Total de pedidos", value: totalPedidos, color: "text-slate-900",   border: "border-slate-300"  },
             { label: "Em andamento",     value: emAndamento,  color: "text-amber-600",   border: "border-amber-400"  },
@@ -98,18 +98,18 @@ export default async function PortalPage() {
           ].map((s) => (
             <div
               key={s.label}
-              className={`rounded-[20px] border-t-[3px] bg-white px-4 py-5 text-center shadow-sm ${s.border}`}
+              className={`rounded-[16px] sm:rounded-[20px] border-t-[3px] bg-white px-3 py-4 text-center shadow-sm sm:px-4 sm:py-5 ${s.border}`}
             >
-              <p className={`text-3xl font-black ${s.color}`}>{s.value}</p>
-              <p className="mt-1 text-xs font-medium text-slate-500">{s.label}</p>
+              <p className={`text-2xl font-black sm:text-3xl ${s.color}`}>{s.value}</p>
+              <p className="mt-1 text-[10px] font-medium text-slate-500 sm:text-xs">{s.label}</p>
             </div>
           ))}
         </div>
 
         {/* Orders list */}
         <div className="overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-sm">
-          <div className="flex items-center justify-between border-b border-slate-100 px-8 py-5">
-            <h2 className="text-base font-bold text-slate-900">Meus pedidos</h2>
+          <div className="flex items-center justify-between border-b border-slate-100 px-4 py-4 sm:px-8 sm:py-5">
+            <h2 className="text-sm font-bold text-slate-900 sm:text-base">Meus pedidos</h2>
 
             {/* Solicitar dropdown */}
             <div className="flex items-center gap-2">
@@ -124,9 +124,9 @@ export default async function PortalPage() {
               ))}
               <Link
                 href="/certidao/nascimento"
-                className="inline-flex items-center gap-1.5 rounded-full bg-[#009B3A] px-4 py-2 text-xs font-semibold text-white transition hover:bg-[#007A2F]"
+                className="inline-flex items-center gap-1.5 rounded-full bg-[#009B3A] px-3 py-2 text-xs font-semibold text-white transition hover:bg-[#007A2F] sm:px-4"
               >
-                <Plus className="h-3.5 w-3.5" /> Novo pedido
+                <Plus className="h-3.5 w-3.5" /> <span className="hidden xs:inline sm:inline">Novo pedido</span><span className="xs:hidden sm:hidden">Novo</span>
               </Link>
             </div>
           </div>
@@ -157,7 +157,7 @@ export default async function PortalPage() {
                   <li key={order.id}>
                     <Link
                       href={`/portal/pedido/${order.id}`}
-                      className="flex items-center gap-4 px-8 py-5 transition hover:bg-slate-50"
+                      className="flex items-center gap-3 px-4 py-4 transition hover:bg-slate-50 sm:gap-4 sm:px-8 sm:py-5"
                     >
                       <div className={`hidden sm:flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${st.bg}`}>
                         <Icon className={`h-5 w-5 ${st.text}`} />

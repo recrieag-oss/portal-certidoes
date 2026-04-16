@@ -137,25 +137,25 @@ export default function Home() {
     <main className="relative overflow-hidden bg-white">
 
       {/* ── HERO ─────────────────────────────────────────────────── */}
-      <section className="mx-auto max-w-7xl px-4 pb-16 pt-14 sm:px-8">
+      <section className="mx-auto max-w-7xl px-4 pb-12 pt-10 sm:px-8 sm:pb-16 sm:pt-14">
         <div className="grid gap-10 lg:grid-cols-[1fr_1fr] lg:items-center">
 
           {/* Left — copy */}
           <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <span className="inline-flex items-center gap-2 rounded-full border border-[#009B3A]/25 bg-[#009B3A]/8 px-4 py-2 text-sm font-semibold text-[#009B3A]">
-              <ShieldCheck className="h-4 w-4" /> Ambiente seguro e confiável
+            <span className="inline-flex items-center gap-2 rounded-full border border-[#009B3A]/25 bg-[#009B3A]/8 px-3 py-1.5 text-xs font-semibold text-[#009B3A] sm:px-4 sm:py-2 sm:text-sm">
+              <ShieldCheck className="h-3.5 w-3.5 sm:h-4 sm:w-4" /> Ambiente seguro e confiável
             </span>
-            <h1 className="mt-6 max-w-xl text-4xl font-black tracking-tight text-slate-900 sm:mt-8 sm:text-5xl lg:text-[3.25rem] lg:leading-[1.1]">
+            <h1 className="mt-5 max-w-xl text-3xl font-black tracking-tight text-slate-900 sm:mt-8 sm:text-5xl lg:text-[3.25rem] lg:leading-[1.1]">
               Precisando de 2ª via de Certidão?
             </h1>
-            <p className="mt-6 max-w-lg text-lg leading-8 text-slate-600">
+            <p className="mt-4 max-w-lg text-base leading-7 text-slate-600 sm:mt-6 sm:text-lg sm:leading-8">
               Peça sua certidão de forma simples e receba seu documento sem sair de casa.
               Conectamos você a qualquer cartório do Brasil.
             </p>
-            <div className="mt-10">
+            <div className="mt-8 sm:mt-10">
               <Link
                 href="/solicitar"
-                className="inline-flex items-center justify-center rounded-[28px] bg-[#009B3A] px-8 py-4 text-base font-bold text-white shadow-green-glow transition hover:bg-[#007A2F] hover:shadow-lg"
+                className="inline-flex w-full items-center justify-center rounded-[28px] bg-[#009B3A] px-8 py-4 text-base font-bold text-white shadow-green-glow transition hover:bg-[#007A2F] hover:shadow-lg sm:w-auto"
               >
                 Pedir Certidão Agora
               </Link>
@@ -229,7 +229,7 @@ export default function Home() {
       </section>
 
       {/* ── COMO FUNCIONA ─────────────────────────────────────────── */}
-      <section id="como-funciona" className="bg-[#F5F7FA] px-4 py-20 sm:px-8">
+      <section id="como-funciona" className="bg-[#F5F7FA] px-4 py-14 sm:px-8 sm:py-20">
         <div className="mx-auto max-w-7xl">
           <div className="mb-12 flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
             <div>
@@ -239,7 +239,7 @@ export default function Home() {
             <p className="text-sm text-slate-500 sm:text-right">Do pedido à entrega,<br className="hidden sm:block" /> tudo em poucos passos.</p>
           </div>
 
-          <div className="relative grid grid-cols-2 gap-6 md:grid-cols-4">
+          <div className="relative grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-4">
             {/* Connecting line */}
             <div className="pointer-events-none absolute left-[12.5%] right-[12.5%] top-[2.2rem] hidden h-px bg-slate-200 md:block" />
 
@@ -276,11 +276,11 @@ export default function Home() {
       </section>
 
       {/* ── CONFIANÇA ─────────────────────────────────────────────── */}
-      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-8">
+      <section className="mx-auto max-w-7xl px-4 py-14 sm:px-8 sm:py-20">
         <div className="grid gap-4 md:grid-cols-5">
 
           {/* Left — institutional blue panel */}
-          <div className="md:col-span-2 rounded-[32px] bg-[#002776] p-8 text-white flex flex-col justify-between">
+          <div className="md:col-span-2 rounded-[28px] sm:rounded-[32px] bg-[#002776] p-6 sm:p-8 text-white flex flex-col justify-between">
             <div>
               <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5">
                 <span className="h-1.5 w-1.5 rounded-full bg-[#FEDF00] animate-pulse" />
@@ -317,7 +317,7 @@ export default function Home() {
               { label: "Suporte especializado",                     desc: "Equipe dedicada para acompanhar cada etapa do processo." },
               { label: "Pagamento seguro (SSL)",                    desc: "Transações criptografadas com certificado SSL de ponta a ponta." },
             ].map((item) => (
-              <div key={item.label} className="flex items-start gap-4 rounded-[24px] border border-slate-200 bg-white px-6 py-5 transition hover:border-[#009B3A]/30 hover:shadow-sm">
+              <div key={item.label} className="flex items-start gap-3 sm:gap-4 rounded-[20px] sm:rounded-[24px] border border-slate-200 bg-white px-4 py-4 sm:px-6 sm:py-5 transition hover:border-[#009B3A]/30 hover:shadow-sm">
                 <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#009B3A]/10">
                   <svg className="h-4 w-4 text-[#009B3A]" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
@@ -334,17 +334,17 @@ export default function Home() {
       </section>
 
       {/* ── CTA ───────────────────────────────────────────────────── */}
-      <section className="mx-auto max-w-7xl px-4 pb-20 sm:px-8">
-        <div className="rounded-[32px] bg-[#009B3A] px-8 py-12 text-white shadow-green-glow">
-          <div className="grid gap-6 md:grid-cols-[1.5fr_0.8fr] md:items-center">
+      <section className="mx-auto max-w-7xl px-4 pb-14 sm:px-8 sm:pb-20">
+        <div className="rounded-[28px] sm:rounded-[32px] bg-[#009B3A] px-5 py-8 sm:px-8 sm:py-12 text-white shadow-green-glow">
+          <div className="grid gap-5 md:grid-cols-[1.5fr_0.8fr] md:items-center">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.3em] text-green-100/80">Comece agora</p>
-              <h2 className="mt-4 text-3xl font-bold sm:text-4xl">Solicite sua certidão com tranquilidade</h2>
+              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-green-100/80 sm:text-sm">Comece agora</p>
+              <h2 className="mt-3 text-2xl font-bold sm:mt-4 sm:text-3xl lg:text-4xl">Solicite sua certidão com tranquilidade</h2>
             </div>
             <div className="flex items-center justify-start md:justify-end">
               <Link
                 href="/solicitar"
-                className="inline-flex items-center justify-center rounded-[28px] bg-white px-6 py-4 text-sm font-bold text-[#009B3A] transition hover:bg-green-50"
+                className="inline-flex w-full items-center justify-center rounded-[28px] bg-white px-6 py-4 text-sm font-bold text-[#009B3A] transition hover:bg-green-50 sm:w-auto"
               >
                 Solicitar certidão agora
               </Link>
@@ -354,19 +354,19 @@ export default function Home() {
       </section>
 
       {/* ── FAQ ───────────────────────────────────────────────────── */}
-      <section className="mx-auto max-w-7xl px-4 pb-20 sm:px-8">
-        <div className="rounded-[32px] border border-slate-200 bg-white p-8 shadow-soft">
-          <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+      <section className="mx-auto max-w-7xl px-4 pb-14 sm:px-8 sm:pb-20">
+        <div className="rounded-[28px] sm:rounded-[32px] border border-slate-200 bg-white p-5 sm:p-8 shadow-soft">
+          <div className="mb-6 sm:mb-8 flex flex-col gap-2 sm:gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p className="text-sm font-bold uppercase tracking-[0.3em] text-[#009B3A]">FAQ</p>
-              <h2 className="mt-3 text-3xl font-bold text-slate-900">Perguntas frequentes</h2>
+              <p className="text-xs font-bold uppercase tracking-[0.3em] text-[#009B3A] sm:text-sm">FAQ</p>
+              <h2 className="mt-2 text-2xl font-bold text-slate-900 sm:mt-3 sm:text-3xl">Perguntas frequentes</h2>
             </div>
           </div>
-          <div className="space-y-3">
+          <div className="space-y-2.5 sm:space-y-3">
             {faqs.map((faq) => (
-              <details key={faq.question} className="group rounded-[20px] border border-slate-200 p-6 transition hover:border-[#009B3A]/30 hover:shadow-sm">
-                <summary className="cursor-pointer text-base font-semibold text-slate-900">{faq.question}</summary>
-                <p className="mt-3 text-sm leading-6 text-slate-600">{faq.answer}</p>
+              <details key={faq.question} className="group rounded-[16px] sm:rounded-[20px] border border-slate-200 p-4 sm:p-6 transition hover:border-[#009B3A]/30 hover:shadow-sm">
+                <summary className="cursor-pointer text-sm font-semibold text-slate-900 sm:text-base">{faq.question}</summary>
+                <p className="mt-2.5 text-sm leading-6 text-slate-600 sm:mt-3">{faq.answer}</p>
               </details>
             ))}
           </div>

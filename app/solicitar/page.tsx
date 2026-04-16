@@ -46,27 +46,27 @@ const options = [
 
 export default function SolicitarPage() {
   return (
-    <main className="min-h-screen bg-white px-4 py-16 sm:px-8">
+    <main className="min-h-screen bg-white px-4 py-10 sm:px-8 sm:py-16">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="mx-auto mb-12 max-w-2xl text-center"
+        className="mx-auto mb-8 max-w-2xl text-center sm:mb-12"
       >
         <p className="text-xs font-bold uppercase tracking-[0.3em] text-[#009B3A]">
           Solicitar certidão
         </p>
-        <h1 className="mt-3 text-3xl font-black tracking-tight text-slate-900 sm:text-4xl">
+        <h1 className="mt-3 text-2xl font-black tracking-tight text-slate-900 sm:text-4xl">
           Qual certidão você precisa?
         </h1>
-        <p className="mt-4 text-base leading-7 text-slate-500">
+        <p className="mt-3 text-sm leading-6 text-slate-500 sm:mt-4 sm:text-base sm:leading-7">
           Selecione o tipo de documento e preencha o formulário em minutos.
         </p>
       </motion.div>
 
       {/* Cards */}
-      <div className="mx-auto grid max-w-5xl gap-5 sm:grid-cols-3">
+      <div className="mx-auto grid max-w-5xl gap-4 sm:gap-5 sm:grid-cols-3">
         {options.map(({ iconSrc, iconAlt, title, description, detail, href, accentColor, accentLight, accentBorder, tag }, i) => (
           <motion.div
             key={href}
@@ -76,7 +76,7 @@ export default function SolicitarPage() {
           >
             <Link
               href={href}
-              className="group relative flex h-full flex-col overflow-hidden rounded-[2rem] border bg-white p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+              className="group relative flex h-full flex-col overflow-hidden rounded-[1.5rem] sm:rounded-[2rem] border bg-white p-5 sm:p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
               style={{
                 borderColor: accentBorder,
                 boxShadow: "0 2px 12px rgba(0,0,0,0.05)",
@@ -84,12 +84,12 @@ export default function SolicitarPage() {
             >
               {/* Top accent bar */}
               <div
-                className="absolute inset-x-0 top-0 h-[3px] rounded-t-[2rem]"
+                className="absolute inset-x-0 top-0 h-[3px] rounded-t-[1.5rem] sm:rounded-t-[2rem]"
                 style={{ background: accentColor }}
               />
 
-              {/* Icon */}
-              <div className="mb-6 flex h-44 w-full items-center justify-center">
+              {/* Icon — smaller on mobile */}
+              <div className="mb-4 flex h-28 w-full items-center justify-center sm:mb-6 sm:h-44">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={iconSrc}
@@ -99,13 +99,13 @@ export default function SolicitarPage() {
               </div>
 
               {/* Text */}
-              <h2 className="text-lg font-black leading-snug text-slate-900">{title}</h2>
-              <p className="mt-2 text-sm leading-relaxed text-slate-500">{description}</p>
-              <p className="mt-3 text-xs leading-relaxed text-slate-400">{detail}</p>
+              <h2 className="text-base font-black leading-snug text-slate-900 sm:text-lg">{title}</h2>
+              <p className="mt-1.5 text-sm leading-relaxed text-slate-500 sm:mt-2">{description}</p>
+              <p className="mt-2 text-xs leading-relaxed text-slate-400 sm:mt-3">{detail}</p>
 
               {/* CTA */}
               <div
-                className="mt-6 flex items-center gap-2 text-sm font-bold transition-all duration-300 group-hover:gap-3"
+                className="mt-4 flex items-center gap-2 text-sm font-bold transition-all duration-300 group-hover:gap-3 sm:mt-6"
                 style={{ color: accentColor }}
               >
                 Solicitar agora

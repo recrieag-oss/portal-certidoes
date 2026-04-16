@@ -69,20 +69,20 @@ export default function AcompanharPage() {
   const currentIdx = result ? ALL_STATUSES.indexOf(result.status) : -1;
 
   return (
-    <main className="mx-auto max-w-3xl px-4 py-20 sm:px-8">
+    <main className="mx-auto max-w-3xl px-4 py-12 sm:px-8 sm:py-20">
       {/* Search card */}
-      <div className="rounded-[32px] bg-white p-8 shadow-soft sm:p-10">
-        <div className="mb-8 flex flex-col items-center gap-3 text-center">
-          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#002776]/10">
-            <Search className="h-6 w-6 text-[#002776]" />
+      <div className="rounded-[28px] bg-white p-6 shadow-soft sm:rounded-[32px] sm:p-10">
+        <div className="mb-6 flex flex-col items-center gap-3 text-center sm:mb-8">
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#002776]/10 sm:h-14 sm:w-14">
+            <Search className="h-5 w-5 text-[#002776] sm:h-6 sm:w-6" />
           </div>
-          <h1 className="text-3xl font-bold text-slate-950">Acompanhar pedido</h1>
+          <h1 className="text-2xl font-bold text-slate-950 sm:text-3xl">Acompanhar pedido</h1>
           <p className="text-sm leading-6 text-slate-500">
             Digite o código recebido após a solicitação para consultar o status em tempo real.
           </p>
         </div>
 
-        <form onSubmit={handleSearch} className="flex gap-3">
+        <form onSubmit={handleSearch} className="flex flex-col gap-3 sm:flex-row">
           <input
             value={codigo}
             onChange={(e) => setCodigo(e.target.value)}
@@ -92,7 +92,7 @@ export default function AcompanharPage() {
           <button
             type="submit"
             disabled={loading || !codigo.trim()}
-            className="inline-flex items-center gap-2 rounded-[18px] bg-[#002776] px-6 py-4 text-sm font-bold text-white transition hover:bg-blue-900 disabled:opacity-50"
+            className="inline-flex w-full items-center justify-center gap-2 rounded-[18px] bg-[#002776] px-6 py-4 text-sm font-bold text-white transition hover:bg-blue-900 disabled:opacity-50 sm:w-auto"
           >
             {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Search className="h-4 w-4" />}
             {loading ? "Consultando..." : "Consultar"}
@@ -131,16 +131,16 @@ export default function AcompanharPage() {
 
               {/* PDF download */}
               {result.hasPdf && (
-                <div className="mt-5 flex items-center justify-between gap-4 rounded-[18px] bg-emerald-500 px-5 py-4">
+                <div className="mt-5 flex flex-col gap-3 rounded-[18px] bg-emerald-500 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:px-5">
                   <div className="flex items-center gap-3">
-                    <FileText className="h-5 w-5 text-white" />
+                    <FileText className="h-5 w-5 shrink-0 text-white" />
                     <div>
                       <p className="font-bold text-white text-sm">Documento disponível para download</p>
                       <p className="text-xs text-emerald-100">Faça login para baixar seu arquivo.</p>
                     </div>
                   </div>
                   <Link href="/portal/login"
-                    className="flex shrink-0 items-center gap-2 rounded-full bg-white px-4 py-2 text-xs font-bold text-emerald-700 transition hover:bg-emerald-50">
+                    className="flex w-full items-center justify-center gap-2 rounded-full bg-white px-4 py-2 text-xs font-bold text-emerald-700 transition hover:bg-emerald-50 sm:w-auto sm:shrink-0">
                     Acessar portal <ArrowRight className="h-3.5 w-3.5" />
                   </Link>
                 </div>
@@ -197,13 +197,13 @@ export default function AcompanharPage() {
             </div>
 
             {/* Login CTA */}
-            <div className="flex items-center justify-between rounded-[24px] border border-slate-200 bg-white px-6 py-5">
+            <div className="flex flex-col gap-3 rounded-[24px] border border-slate-200 bg-white px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-6">
               <div>
                 <p className="text-sm font-semibold text-slate-900">Acompanhe com mais detalhes</p>
                 <p className="text-xs text-slate-400">Acesse a área do cliente para ver todas as informações do pedido.</p>
               </div>
               <Link href="/portal/login"
-                className="inline-flex items-center gap-2 rounded-full bg-[#002776] px-5 py-2.5 text-xs font-bold text-white transition hover:bg-blue-900">
+                className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#002776] px-5 py-2.5 text-xs font-bold text-white transition hover:bg-blue-900 sm:w-auto">
                 Entrar <ArrowRight className="h-3.5 w-3.5" />
               </Link>
             </div>

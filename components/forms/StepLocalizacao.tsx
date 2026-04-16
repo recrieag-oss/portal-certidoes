@@ -89,7 +89,7 @@ export function StepLocalizacao({ tipo }: Props) {
   return (
     <div className="space-y-6">
       {/* Step 1 – Estado */}
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-2">
           <span className="flex items-center gap-1.5 text-sm font-semibold text-slate-700">
             <MapPin className="h-4 w-4 text-brand-500" /> Estado

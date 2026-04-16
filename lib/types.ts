@@ -65,8 +65,8 @@ export type ContatoStep = {
   cpfSolicitante: string;
   email: string;
   whatsapp: string;
-  senha: string;
-  confirmarSenha: string;
+  senha?: string;
+  confirmarSenha?: string;
   aceitaTermos: boolean;
 };
 

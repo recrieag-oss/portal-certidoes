@@ -23,13 +23,13 @@ export function StepServicos() {
 
   return (
     <div className="space-y-6">
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-3 sm:gap-4 sm:grid-cols-2">
         {servicosAdicionais.map((servico) => {
           const selected = servicos.includes(servico.id);
           return (
             <label
               key={servico.id}
-              className={`group cursor-pointer rounded-[24px] border p-5 transition ${
+              className={`group cursor-pointer rounded-[20px] sm:rounded-[24px] border p-4 sm:p-5 transition ${
                 selected ? "border-brand-500 bg-brand-50" : "border-slate-200 bg-white"
               }`}
             >
@@ -52,9 +52,9 @@ export function StepServicos() {
       </div>
 
       {formato === "fisica" ? (
-        <div className="rounded-[24px] border border-slate-200 bg-slate-50 p-6">
+        <div className="rounded-[20px] sm:rounded-[24px] border border-slate-200 bg-slate-50 p-4 sm:p-6">
           <p className="mb-4 text-sm font-semibold text-slate-800">Endereço de entrega</p>
-          <div className="grid gap-4 md:grid-cols-3">
+          <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
             <input className="input-base" placeholder="CEP" {...register("enderecoEntrega.cep")} />
             <input className="input-base" placeholder="Rua" {...register("enderecoEntrega.rua")} />
             <input className="input-base" placeholder="Número" {...register("enderecoEntrega.numero")} />

@@ -122,7 +122,7 @@ function FormatoSection() {
   return (
     <div className="space-y-4">
       <p className="text-sm font-semibold text-slate-700">Formato da certidão</p>
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-3 sm:gap-4 sm:grid-cols-2">
         {[
           {
             value: "fisica",
@@ -139,7 +139,7 @@ function FormatoSection() {
           return (
             <label
               key={option.value}
-              className={`cursor-pointer rounded-[24px] border p-5 transition ${
+              className={`cursor-pointer rounded-[20px] sm:rounded-[24px] border p-4 sm:p-5 transition ${
                 active ? "border-brand-500 bg-brand-50" : "border-slate-200 bg-white"
               }`}
             >
@@ -180,7 +180,7 @@ function DadosComplementares() {
       <p className="mb-4 text-xs text-slate-500 leading-relaxed">
         Se você possui o livro, página e termo do registro, informe abaixo. Esses dados aceleram a localização da certidão.
       </p>
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid gap-4 grid-cols-1 sm:grid-cols-3">
         <input className="input-base" placeholder="Livro" {...register("livro")} />
         <input className="input-base" placeholder="Página" {...register("pagina")} />
         <input className="input-base" placeholder="Termo" {...register("termo")} />
@@ -200,7 +200,7 @@ function DadosNascimento() {
 
   return (
     <div className="space-y-6">
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-2">
           <span className="flex items-center gap-1.5 text-sm font-semibold text-slate-700">
             <User className="h-4 w-4 text-brand-500" /> Nome completo
@@ -235,7 +235,7 @@ function DadosNascimento() {
         </div>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid gap-4 grid-cols-1 sm:grid-cols-3">
         <div className="space-y-2">
           <span className="text-sm font-semibold text-slate-700">Data de nascimento</span>
           <div className="relative">
@@ -311,7 +311,7 @@ function DadosObito() {
       </div>
 
       {/* Mãe e Pai */}
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-2">
           <span className="text-sm font-semibold text-slate-700">
             Nome completo da mãe na certidão
@@ -349,7 +349,7 @@ function DadosObito() {
           <Calendar className="h-4 w-4 text-brand-500" />
           Data do óbito
         </span>
-        <div className="md:max-w-xs">
+        <div className="sm:max-w-xs">
           <input
             type="date"
             className="input-base"
@@ -397,7 +397,7 @@ function DadosCasamento() {
           </span>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-2">
+        <div className="grid gap-4 sm:grid-cols-2">
           {/* Cônjuge 1 */}
           <div
             className="rounded-[24px] border border-slate-200 bg-white p-5 space-y-3"
@@ -462,7 +462,7 @@ function DadosCasamento() {
           <Calendar className="h-4 w-4 text-brand-500" />
           Data de casamento
         </span>
-        <div className="md:max-w-xs">
+        <div className="sm:max-w-xs">
           <input
             type="date"
             className="input-base"

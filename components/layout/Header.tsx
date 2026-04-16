@@ -7,17 +7,20 @@ import { Menu, X, ShieldCheck, Phone, UserCircle2, ChevronDown, FileText, Heart,
 
 function TrustBar() {
   const itemCls = "flex items-center gap-1.5 whitespace-nowrap text-[11px] font-semibold tracking-wide text-slate-600";
+  const sepCls  = "hidden h-3.5 w-px shrink-0 bg-slate-200 sm:block";
   return (
     <div className="w-full border-b border-slate-100 bg-white">
-      <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-center gap-x-5 gap-y-1.5 px-4 py-2 sm:gap-x-8 md:px-8">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-x-3 px-4 py-2 sm:justify-center sm:gap-x-6 md:gap-x-8 md:px-8">
         <span className={itemCls}>
           <Lock className="h-3.5 w-3.5 shrink-0 text-[#009B3A]" strokeWidth={2.5} />
-          Site 100% Seguro
+          Site Seguro
         </span>
+        <span className={sepCls} aria-hidden="true" />
         <span className={itemCls}>
           <ShieldCheck className="h-3.5 w-3.5 shrink-0 text-[#009B3A]" strokeWidth={2.5} />
           Dados Protegidos
         </span>
+        <span className={sepCls} aria-hidden="true" />
         <span className={itemCls}>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="shrink-0" aria-hidden="true">
             <path d="M9.5 4.5L4.5 9.5a3.536 3.536 0 0 0 0 5l5 5a3.536 3.536 0 0 0 5 0l5-5a3.536 3.536 0 0 0 0-5l-5-5a3.536 3.536 0 0 0-5 0Z" stroke="#009B3A" strokeWidth="1.8" strokeLinejoin="round" />
@@ -25,11 +28,13 @@ function TrustBar() {
           </svg>
           PIX
         </span>
+        <span className={sepCls} aria-hidden="true" />
         <span className={itemCls}>
           <CreditCard className="h-3.5 w-3.5 shrink-0 text-[#002776]" strokeWidth={2.5} />
-          Cartão de Crédito
+          Cartão
         </span>
-        <span className={itemCls}>
+        <span className={sepCls} aria-hidden="true" />
+        <span className={`${itemCls} hidden sm:flex`}>
           <Check className="h-3.5 w-3.5 shrink-0 text-[#009B3A]" strokeWidth={2.5} />
           Boleto Bancário
         </span>
