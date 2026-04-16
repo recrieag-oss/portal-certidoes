@@ -77,12 +77,14 @@ export async function PATCH(request: Request, { params }: { params: { id: string
       notifications.push(sendWhatsAppMessage(user.whatsapp, orderForNotify, status, note));
     }
 
-    Promise.allSettled(notifications).then((results) => {
-      results.forEach((r, i) => {
-        if (r.status === "rejected") {
-          console.error(`[notify] notification[${i}] failed:`, r.reason);
-        }
-      });
+    // await antes do return — em serverless a função encerra com o return
+    const results = await Promise.allSettled(notifications);
+    results.forEach((r, i) => {
+      if (r.status === "rejected") {
+        console.error(`[notify] notification[${i}] failed:`, r.reason);
+      } else {
+        console.log(`[notify] notification[${i}] ok:`, (r.value as any));
+      }
     });
   }
 
