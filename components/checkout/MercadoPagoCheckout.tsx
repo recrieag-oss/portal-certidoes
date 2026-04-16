@@ -98,7 +98,7 @@ export function MercadoPagoCheckout() {
   };
 
   return (
-    <div className="rounded-[32px] border border-slate-200 bg-white p-8 shadow-soft lg:sticky lg:top-28">
+    <div className="rounded-[24px] border border-slate-200 bg-white p-5 shadow-soft sm:rounded-[32px] sm:p-8 lg:sticky lg:top-28">
       <h2 className="text-xl font-semibold text-slate-950">Pagamento Mercado Pago</h2>
       <p className="mt-3 text-sm text-slate-500">
         Você será redirecionado para a página segura do Mercado Pago para concluir o pagamento.
