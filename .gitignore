@@ -45,3 +45,6 @@ data/orders.json
 data/users.json
 data/sessions.json
 data/pdfs/
+
+.vercel
+.env*.local
