@@ -1,31 +1,36 @@
-const fs = require('fs');
-const path = require('path');
+'use strict';
 
-// Force correct working directory
+// Force correct working directory — must be before any require('next')
 process.chdir(__dirname);
-process.env.PORT = process.env.PORT || '3000';
-process.env.HOSTNAME = '0.0.0.0';
+process.env.NODE_ENV = process.env.NODE_ENV || 'production';
+process.env.PORT     = process.env.PORT     || '3000';
 
-// Symlink static assets into standalone directory (required by Next.js standalone)
-const standaloneDir = path.join(__dirname, '.next', 'standalone');
-const staticSrc  = path.join(__dirname, '.next', 'static');
-const staticDest = path.join(standaloneDir, '.next', 'static');
-const publicSrc  = path.join(__dirname, 'public');
-const publicDest = path.join(standaloneDir, 'public');
+const { createServer } = require('http');
+const { parse }        = require('url');
+const next             = require('next');
 
-function ensureLink(src, dest) {
-  try {
-    if (!fs.existsSync(dest)) {
-      fs.symlinkSync(src, dest, 'dir');
-      console.log('Symlinked:', src, '->', dest);
-    }
-  } catch (e) {
-    console.error('Symlink error:', e.message);
-  }
-}
+const port = parseInt(process.env.PORT, 10) || 3000;
 
-ensureLink(staticSrc,  staticDest);
-ensureLink(publicSrc,  publicDest);
+// dir: __dirname ensures Next.js always resolves .next/ relative to THIS file,
+// regardless of what working directory Passenger sets before launch.
+const app    = next({ dev: false, dir: __dirname });
+const handle = app.getRequestHandler();
 
-// Launch standalone Next.js server
-require('./.next/standalone/server.js');
+app.prepare()
+  .then(() => {
+    createServer(async (req, res) => {
+      try {
+        await handle(req, res, parse(req.url, true));
+      } catch (err) {
+        console.error('Error handling', req.url, err);
+        res.statusCode = 500;
+        res.end('Internal Server Error');
+      }
+    }).listen(port, '0.0.0.0', () => {
+      console.log(`> Next.js ready on port ${port}`);
+    });
+  })
+  .catch(err => {
+    console.error('Failed to start Next.js server:', err);
+    process.exit(1);
+  });
